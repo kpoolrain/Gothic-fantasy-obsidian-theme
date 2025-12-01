@@ -1,0 +1,4143 @@
+/* =============================================================================
+   Theme Name: Obsidian Gothic Remastered (Albus Integration)
+   Version: 4.0 Ultimate
+   Description: 深度融合哥特视觉风格与 Albus/Blue Topaz 的高级交互动画。
+   Optimization: Logic & Formatting Refined by AI
+   本主题部分搬运了Composer+的css；外加from脚本（Form Flow）的主题设计。
+   并在AnuPpuccin主题的基础上进行了改编，可以单独将css放在片段里启用。
+   可以说是是一个畸形产物。已有一小部分可以在style setting更改。
+   但绝大多数部分的哥特主题元素为本学习者创作而成，并且期望能够被优化，指出不足。
+   ============================================================================= */
+
+/* @settings
+name: Gothic☩
+id: blue-topaz-legacy-for-composer
+settings:
+- id: btlfc-layout
+  title: Layout
+  title.zh: 布局
+  type: heading
+  level: 1
+  collapsed: true
+- id: anp-alt-tab-header
+  title: 
+  title.zh: 切换标签页动画效果
+  description: 
+  type: heading
+  level: 2
+  collapsed: true
+- id: anp-alt-tab-style
+  title:
+  title.zh: 标签页动画效果
+  type: class-select
+  allowEmpty: false
+  default: anp-alternate-tab-toggle
+  options:
+  - label: Safari-style (Animated)
+    value: anp-alternate-tab-toggle
+  - label: Default
+    value: none
+- id: albus-setting-card
+  title:
+  title.zh: 设置界面样式调整
+  description: 
+  type: heading
+  level: 2
+  collapsed: true
+- id: Grid-Layout-info-text
+  title: Information
+  title.zh: 更多信息
+  description: "本样式参考了Huajin的[obsidian-settings-management](https://github.com/xhuajin/obsidian-settings-management/)插件的样式。"
+  type: info-text
+  markdown: true
+- id: hotkey-layout
+  title:
+  title.zh: 关闭快捷键列表卡片化
+  type: class-toggle
+  default: false
+- id: plugin-layout
+  title:
+  title.zh: 关闭核心插件列表卡片化
+  type: class-toggle
+  default: false
+- id: installed-plugin-layout
+  title:
+  title.zh: 关闭第三方插件列表卡片化
+  type: class-toggle
+  default: false
+- id: btlfc-s-bar
+  title:
+  title.zh: 滚动条
+  description: 
+  type: heading
+  level: 2
+  collapsed: true
+- id: btlfc-s-bar-switch
+  title:
+  title.zh: 关闭滚动条
+  type: class-toggle
+  default: false
+- id: btlfc-s-bar
+  title:
+  title.zh: 彩虹文件目录
+  description: 
+  type: heading
+  level: 2
+  collapsed: true
+- id: folder-bg-opacity-setting
+  title: Folder Background Opacity
+  title.zh: 文件夹背景不透明度
+  description: Set the background opacity of the folder
+  description.zh: 设置文件夹的背景不透明度
+  type: variable-number
+  default: 0.08
+  min: 0
+  max: 1
+- id: folder-text-opacity-setting
+  title: Folder Text Opacity
+  title.zh: 文件夹文本不透明度
+  description: Set the text opacity of the folder
+  description.zh: 设置文件夹的文本不透明度
+  type: variable-number
+  default: 0.85
+  min: 0
+  max: 1
+- id: folder-hover-opacity-setting
+  title: Folder Hover Opacity
+  title.zh: 文件夹悬停不透明度
+  description: Set the hover opacity of the folder
+  description.zh: 设置文件夹的悬停不透明度
+  type: variable-number
+  default: 0.12
+  min: 0
+  max: 1
+- id: folder-sub-bg-opacity-setting
+  title: Folder Sub Background Opacity
+  title.zh: 子文件夹背景不透明度
+  description: Set the background opacity of the sub-folder
+  description.zh: 设置子文件夹的背景不透明度
+  type: variable-number
+  default: 0.04
+  min: 0
+  max: 1
+- id: folder-sub-text-opacity-setting
+  title: Folder Sub Text Opacity
+  title.zh: 子文件夹文本不透明度
+  description: Set the text opacity of the sub-folder
+  description.zh: 设置子文件夹的文本不透明度
+  type: variable-number
+  default: 0.7
+  min: 0
+  max: 1
+- id: albus-doc-property
+  title:
+  title.zh: 文档属性
+  description: 
+  type: heading
+  level: 2
+  collapsed: true
+- id: albus-doc-property-switch
+  title: 
+  title.zh: 文档属性显示方式
+  description:
+  description.zh:
+  type: class-select
+  allowEmpty: false
+  default: doc--hide
+  options:
+      - label: 阅读模式下隐藏
+        value: doc--hide
+      - label: 全模式右上角悬浮球
+        value: doc--ball
+*/
+
+/* =============================================================================
+   1. 核心变量系统 (Core Variables)
+   整合 Gothic 配色与 Albus 功能变量
+   ============================================================================= */
+:root {
+    /* --- 哥特核心调色板 --- */
+    --g-blood: var(--gothic-main-color);
+    --g-purple: var(--gothic-sec-color);
+    --g-gold: #d4af37;
+    --g-silver: #c0c0c0;
+    --g-black: #0a0a0c;
+    --g-charcoal: #1a1a1a;
+    
+    /* --- Albus 兼容性变量 (用于动画和布局) --- */
+    --animation: 400ms ease-in;
+    --header-height: 45px;
+    --tab-stacked-header-width: 40px;
+
+    /* ===== 变量系统 ===== */
+    /* 主色调 */
+    --bg-dark: #13123b;
+    --bg-darker: #050505;
+    --bg-light: #3a1a37;
+    --bg-lighter: #000000;
+    
+    /* 强调色 */
+    --accent-green: rgb(218, 55, 109);
+    --accent-green-dark: #750404;
+    --accent-green-light: rgb(117, 29, 29);
+    --accent-purple: #831414;
+    --accent-purple-dark: #1b1b49;
+    --accent-purple-light: rgb(142, 150, 153);
+    --accent-red: #FF0000;
+    --accent-red-dark: #CC0000;
+    --accent-red-light: #FF3333;
+    --accent-gold: #D4AF37;
+    --accent-silver: #C0C0C0;
+    
+    /* 文字色 */
+    --text-primary: #E8E8E8;
+    --text-secondary: #b8b8b8;
+    --text-muted: #888888;
+    --text-highlight: #FFFFFF;
+    
+    /* 边框色 */
+    --border-dark: #333333;
+    --border-medium: #555555;
+    --border-light: #777777;
+    
+    /* 特殊效果 */
+    --glow-purple: 0 0 10px var(--accent-purple);
+    --glow-green: 0 0 10px var(--accent-green);
+    --glow-red: 0 0 10px var(--accent-red);
+    --shadow-heavy: 0 4px 20px rgba(0, 0, 0, 0.7);
+    --shadow-medium: 0 2px 10px rgba(0, 0, 0, 0.5);
+    --shadow-light: 0 1px 5px rgba(0, 0, 0, 0.3);
+
+    /* 哥特主题变量系统 */
+    --gothic-black: #000000;
+    --gothic-blood: #8B0000;
+    --gothic-purple: #4B0082;
+    --gothic-metal: #C0C0C0;
+    --gothic-silver: #E5E5E5;
+    --gothic-ivory: #F5F5DC;
+    --gothic-charcoal: #2F2F2F;
+    
+    /* 语义变量 - 暗黑哥特 */
+    --bg-primary-dark: var(--gothic-black);
+    --bg-secondary-dark: #1a1a1a;
+    --text-normal-dark: var(--gothic-silver);
+    --accent-primary-dark: var(--gothic-blood);
+    --accent-secondary-dark: var(--gothic-purple);
+    
+    /* 语义变量 - 维多利亚哥特 */
+    --bg-primary-victorian: var(--gothic-ivory);
+    --bg-secondary-victorian: #E8E8D0;
+    --text-normal-victorian: var(--gothic-charcoal);
+    --accent-primary-victorian: var(--gothic-metal);
+    --accent-secondary-victorian: #8B4513;
+
+    /* 文字层级 */
+    --text-primary: #d4c5d9;
+    --text-secondary: #b8a8bd;
+    --text-muted: #8b7a94;
+    --text-faint: #5a4d61;
+    --text-accent: #e891b0;
+    --text-highlight: #f4b8d0;
+
+    /* 渐变预设 */
+    --gradient-crimson: linear-gradient(135deg, #c74a77 0%, #b83d66 100%);
+    --gradient-purple: linear-gradient(135deg, #8b5a9e 0%, #6b4a7e 100%);
+    --gradient-mixed: linear-gradient(135deg, #c74a77 0%, #8b5a9e 50%, #6b4a7e 100%);
+    --gradient-vertical: linear-gradient(180deg, rgba(199, 74, 119, 0.2) 0%, transparent 100%);
+    --gradient-radial: radial-gradient(circle at center, rgba(199, 74, 119, 0.15) 0%, transparent 70%);
+    
+    /* 魔幻主题色 */
+    --witch-trial-red: #8B0000;
+    --witch-trial-purple: #4B0082;
+    --witch-trial-dark: #0d0a0b;
+    --witch-trial-ash: #2f2f2f;
+    --witch-trial-silver: #C0C0C0;
+    --witch-trial-gold: #B8860B;
+    --witch-trial-ivory: #F5F5DC;
+    
+    /* 魔法元素色 */
+    --magic-pink: #FF69B4;
+    --magic-purple: #DA70D6;
+    --magic-dark-purple: #8A2BE2;
+    --magic-black: #0a0a0a;
+    --magic-blood: #8B0000;
+    --magic-shadow: #1a1a1a;
+    
+    /* 魔幻渐变预设 */
+    --gradient-witch-trial: linear-gradient(135deg, var(--witch-trial-red) 0%, var(--witch-trial-purple) 100%);
+    --gradient-magic-aura: linear-gradient(135deg, var(--magic-pink) 0%, var(--magic-purple) 50%, var(--magic-dark-purple) 100%);
+    --gradient-blood-moon: linear-gradient(180deg, var(--witch-trial-red) 0%, var(--witch-trial-dark) 100%);
+    
+    /* 基础代码块颜色 */
+    --code-bg-dark: #0d0a0b;          /* 深色背景 */
+    --code-bg-medium: #1a1a1a;        /* 中等深度背景 */
+    --code-bg-light: #2d1b1b;         /* 浅色背景 */
+    
+    /* 代码块边框颜色 */
+    --code-border-primary: #8B0000;   /* 主边框色 - 深红 */
+    --code-border-secondary: #4B0082; /* 次边框色 - 深紫 */
+    --code-border-accent: #B8860B;    /* 强调边框色 - 金色 */
+    
+    /* 代码块渐变色 */
+    --code-gradient-start: #0d0a0b;   /* 渐变起始色 */
+    --code-gradient-mid: #1a1a1a;     /* 渐变中间色 */
+    --code-gradient-end: #2d1b1b;     /* 渐变结束色 */
+    
+    /* 代码块内部元素颜色 */
+    --code-text-normal: #e6e6e6;      /* 普通文本 */
+    --code-text-keyword: #ff6b6b;     /* 关键字 */
+    --code-text-function: #a5d6ff;    /* 函数名 */
+    --code-text-string: #a3d9a5;      /* 字符串 */
+    --code-text-number: #ffd966;      /* 数字 */
+    --code-text-comment: #a0a0a0;     /* 注释 */
+    --code-text-variable: #d9a5ff;    /* 变量 */
+    --code-text-type: #ff9e6d;        /* 类型 */
+    
+    /* 不同语言的代码块主题 */
+    --code-python-bg: #1e1e2e;
+    --code-javascript-bg: #2b2b2b;
+    --code-html-bg: #1a1a1a;
+    --code-css-bg: #1f1f1f;
+    --code-json-bg: #1c1c1c;
+    --code-yaml-bg: #1b1b1b;
+    --code-markdown-bg: #1d1d1d;
+    --code-sql-bg: #1e1e1e;
+    --code-bash-bg: #202020;
+}
+
+/* =============================================================================
+   2. 主题模式定义 (Theme Modes)
+   分别定义深色与浅色模式下的具体表现
+   ============================================================================= */
+
+/* ========================================
+Albus-0 预设
+======================================== */
+
+/* ========================================
+Albus-0.1 浅色模式
+======================================== */
+.theme-light {
+    --info-card-shadow: rgba(0, 0, 0, 0.5);
+    --info-card-text: rgba(0, 0, 0, 0.2);
+    --hr-color-side: var(--background-primary);
+    --hr-color-center: var(--text-normal);
+    --ib-color-bg: #c0c9d8;
+    --math-callout-shadow: #3A4659;
+    --key-bg-top: #f5f5f5;
+    --key-bg-bottom: #e0e0e0;
+    --key-border: #d0d0d0;
+    --rainbow-button-bg: white;
+    --rainbow-button-t: black;
+    --p-kanban-bg-color: #d3d3d32d;
+    --p-kanban-border-color: #a0a0a060;
+    --p-kanban-card-color-1: #ffffff80;
+    --p-kanban-card-color-2: #ffffff;
+    --p-kanban-color-6: #f18e8e65;
+    --p-kanban-color-5: #eeb36f65;
+    --p-kanban-color-4: #d1d77f65;
+    --p-kanban-color-3: #8ce38465;
+    --p-kanban-color-2: #7cdddd65;
+    --p-kanban-color-1: #52aaf365;
+    --p-kanban-color-8: #ba8be165;
+    --p-kanban-color-7: #e677e065;
+    --p-kanban-color-simple: #cdcdcd2c;
+    --p-kanban-color-shadow: #cfcfcf4d;
+    --text-highlight-background: rgba(248, 227, 217, 0.9);
+    --text-highlight-border-color: rgb(167, 98, 64);
+    --text-highlight-color: rgb(102, 80, 63);
+    --theme-color-translucent-015: hsla(var(--interactive-accent-hsl),0.15);
+    --stickies-color-1: #b8b3e2;
+    --stickies-color-2: #e9c6f1;
+    --stickies-change-color: #F7E999;
+    --stickies-shadow-color: rgb(0, 0, 0, 0.4);
+    --tape-color: #acacac65;
+    --cloze-bg-color: var(--accent-strong);
+    --cloze-decoration: none;
+    --cloze-decoration-color: red;
+    --cloze-decoration-2: dashed;
+    --cloze-decoration-color-2: var(--theme-color);
+    --cloze-bg-color-3: transparent;
+    --cloze-decoration-3: dashed;
+    --cloze-decoration-color-3: var(--theme-color);
+    --strong-em-highlight-color: #237add;
+    --mark-highlight-strong-em: #ff880049;
+    --text-highlight-bg: hsla(var(--text-highlight-bg-h-light), var(--text-highlight-bg-s-light), var(--text-highlight-bg-l-light), var(--text-highlight-bg-a-light));
+    --text-search-highlight-bg: #ffd1dd;
+    --strong-em-color-1: #1048ff;
+    --strong-em-color-2: #14c8ff;
+
+    --custom-color-red: 180, 99, 122;
+    --custom-color-maroon: 180, 99, 122;
+    --custom-color-peach: 214, 129, 125;
+    --custom-color-yellow: 234, 157, 52;
+    --custom-color-green: 86, 148, 159;
+    --custom-color-teal: 86, 148, 159;
+    --custom-color-sky: 40, 105, 131;
+    --custom-color-sapphire: 40, 105, 131;
+    --custom-color-blue: 40, 105, 131;
+    --custom-color-lavender: 144, 122, 169;
+    --custom-color-mauve: 144, 122, 169;
+
+    --card-bg-color: white;
+    --commander-button-color: #554D47;
+    --scroll-bar-color-new: #554d4725;
+    --scroll-bar-color-new2: #554d475a;
+
+    --input-shadow-hover: var(--input-shadow-hover-light);
+    --input-shadow-hover-light: 0px 4px 8px -4px rgba(0, 0, 0, 0.16), inset 0px -1px 0px rgba(0, 0, 0, 0.04), inset 0px 0px 0px 1px rgba(0, 0, 0, 0.12), inset 0px 2px 0.75px rgba(255, 255, 255, 0.4), inset 0px -3px 0.75px rgba(0, 0, 0, 0.04);
+
+    --text-score-color: rgb(128, 0, 0);
+}
+
+/* ========================================
+Albus-0.2 深色模式
+======================================== */
+.theme-dark {
+    --info-card-shadow: rgba(255, 255, 255, 0.5);
+    --info-card-text: rgba(255, 255, 255, 0.2);
+    --hr-color-side: var(--background-primary);
+    --hr-color-center: var(--text-normal);
+    --ib-color-bg: #c0c9d8;
+    --math-callout-shadow: #D4D9E0;
+    --key-bg-top: #2a2a2a;
+    --key-bg-bottom: #1f1f1f;
+    --key-border: #404040;
+    --rainbow-button-bg: black;
+    --rainbow-button-t: white;
+    --kanban-color-1: #0065d852;
+    --kanban-color-2: #30e4e441;
+    --kanban-color-3: #1cb54f44;
+    --kanban-color-4: #97b82b49;
+    --kanban-color-5: #bb722d41;
+    --kanban-color-6: #d12e2e42;
+    --kanban-color-7: #8f36cb3f;
+    --p-kanban-bg-color: #6c6c6c42;
+    --p-kanban-border-color: transparent;
+    --p-kanban-card-color-1: #0000003f;
+    --p-kanban-card-color-2: #41414136;
+    --p-kanban-color-6: #f3424252;
+    --p-kanban-color-5: #eb973752;
+    --p-kanban-color-4: #d2dd3852;
+    --p-kanban-color-3: #38ce2a52;
+    --p-kanban-color-2: #2ec4c452;
+    --p-kanban-color-1: #3496e652;
+    --p-kanban-color-8: #b962ff52;
+    --p-kanban-color-7: #e45bdd52;
+    --p-kanban-color-simple: #8e8e8e41;
+    --p-kanban-color-shadow: #0000004d;
+    --text-highlight-background: hsla(38, 27%, 54%, 0.5);
+    --text-highlight-border-color: hsl(31, 48%, 66%);
+    --text-highlight-color: hsl(40, 20%, 90%);
+    --theme-color-translucent-015: hsla(var(--interactive-accent-hsl),0.15);
+    --stickies-color-1: #683083;
+    --stickies-color-2: #823a92;
+    --stickies-change-color: #CAF4B9;
+    --stickies-shadow-color: rgba(255, 255, 255, 0.6);
+    --tape-color: #99999967;
+    --cloze-bg-color: var(--accent-strong);
+    --cloze-decoration: none;
+    --cloze-decoration-color: red;
+    --cloze-decoration-2: dashed;
+    --cloze-decoration-color-2: var(--theme-color);
+    --cloze-bg-color-3: transparent;
+    --cloze-decoration-3: dashed;
+    --cloze-decoration-color-3: var(--theme-color);
+    --mark-highlight-strong-em: #fff7603a;
+    --strong-em-highlight-color: #a7b4ff;
+    --text-search-highlight-bg: #bb4361;
+    --strong-em-color-1: #43d3ff;
+    --strong-em-color-2: #baaaff;
+
+    --card-bg-color: gray;
+    --commander-button-color: #8D949D;
+    --scroll-bar-color-new: #8d949d33;
+    --scroll-bar-color-new2: #8d949d62;
+
+
+    --custom-color-red: 231, 130, 132;
+    --custom-color-maroon: 234, 153, 156;
+    --custom-color-peach: 239, 159, 118;
+    --custom-color-yellow: 229, 200, 144;
+    --custom-color-green: 166, 209, 137;
+    --custom-color-teal: 129, 200, 190;
+    --custom-color-sky: 153, 209, 219;
+    --custom-color-sapphire: 133, 193, 220;
+    --custom-color-blue: 140, 170, 238;
+    --custom-color-lavender: 186, 187, 241;
+    --custom-color-mauve: 202, 158, 230;
+    --text-score-color: rgba(255, 72, 72, 0.527);
+}
+
+/* ========================================
+Albus-1 布局
+======================================== */
+
+/* ========================================
+Albus-1.1 激活按钮高亮显示
+======================================== */
+body .mod-left-split .workspace-tab-header.is-active .workspace-tab-header-inner-icon,
+body .mod-right-split .workspace-tab-header.is-active .workspace-tab-header-inner-icon,
+body .workspace.is-left-sidedock-open .sidebar-toggle-button.mod-left .clickable-icon,
+body .workspace.is-right-sidedock-open .sidebar-toggle-button.mod-right .clickable-icon,
+body.is-focused .mod-active .workspace-tab-header.is-active .workspace-tab-header-inner-icon,
+body.is-focused .mod-active .workspace-tab-header.is-active .workspace-tab-header-inner-title,
+body .workspace-tab-header.is-active .workspace-tab-header-inner-title {
+    color: var(--color-accent);
+}
+
+/* ========================================
+Albus-1.2 标签页切换淡入动画
+======================================== */
+body  {
+  --animation: 400ms ease-in;
+}
+
+.workspace-split .workspace-tabs:not(.mod-stacked) .view-content,
+.workspace-leaf-content:not(:has(.view-content)) {
+  animation: slide-up var(--animation) forwards;
+}
+
+@keyframes slide-up {
+  0% {
+    opacity: 0;
+    transform: translateY(0%);
+  }
+
+  15% {
+    opacity: 0;
+    transform: translateY(0.1rem);
+  }
+
+  25% {
+    transform: translateY(0.15rem);
+  }
+
+  45% {
+    opacity: 0.5;
+  }
+
+  65% {
+    opacity: 0.7;
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0%);
+  }
+}
+
+body:not(.anp-alternate-tab-toggle):not(.anp-disable-newtab-align) .workspace-split.mod-vertical .workspace-tab-header-spacer {
+  display: none;
+}
+body:not(.anp-alternate-tab-toggle):not(.anp-disable-newtab-align) .workspace-split.mod-vertical .workspace-tab-header-new-tab {
+  margin-left: auto;
+}
+
+.anp-alternate-tab-toggle,
+.anp-default-tab,
+.anp-safari-tab-toggle {
+  --header-height: 45px;
+  --tab-stacked-header-width: var(--anp-stacked-header-width, 40px);
+}
+
+.anp-alternate-tab-toggle .workspace-tabs:not(.mod-stacked),
+.anp-safari-tab-toggle .workspace-tabs:not(.mod-stacked) {
+  --tab-background: var(--background-secondary);
+  --tab-background-active: var(--background-primary);
+  --tab-font-size: 12px;
+  --tab-height: calc(var(--header-height)*0.7);
+  --tab-max-width: 200px;
+  --tab-max-width-active: 300px ;
+}
+
+.anp-alternate-tab-toggle .workspace-ribbon.mod-left {
+  margin-top: var(--header-height);
+}
+
+.anp-alternate-tab-toggle .workspace-ribbon.mod-left:before {
+  padding-bottom: 5px;
+}
+
+.anp-alternate-tab-toggle .workspace-tabs:not(.mod-stacked) .workspace-tab-header::after,
+.anp-alternate-tab-toggle .workspace-tabs:not(.mod-stacked) .workspace-tab-header::before,
+.anp-alternate-tab-toggle .workspace .mod-root .workspace-tabs:not(.mod-stacked) .workspace-tab-header-inner::after {
+  display: none;
+}
+
+.anp-alternate-tab-toggle .mod-horizontal:not(.mod-left-split):not(.mod-right-split) .workspace-tabs:not(.mod-stacked) .workspace-tab-header-container-inner,
+.anp-alternate-tab-toggle .mod-vertical:not(.mod-left-split):not(.mod-right-split) .workspace-tabs:not(.mod-stacked) .workspace-tab-header-container-inner {
+  align-items: left;
+  gap: var(--anp-safari-tab-gap, 10px);
+  justify-content: var(--anp-safari-tab-align, left);
+  margin-top: 8px;
+}
+
+.anp-disable-newtab-align.anp-alternate-tab-toggle .mod-horizontal:not(.mod-left-split):not(.mod-right-split) .workspace-tabs:not(.mod-stacked) .workspace-tab-header-container-inner,
+.anp-disable-newtab-align.anp-alternate-tab-toggle .mod-vertical:not(.mod-left-split):not(.mod-right-split) .workspace-tabs:not(.mod-stacked) .workspace-tab-header-container-inner {
+  gap: var(--anp-safari-tab-gap, 10px);
+  width: unset;
+}
+
+.anp-alternate-tab-toggle .mod-horizontal:not(.mod-left-split):not(.mod-right-split) .workspace-tabs:not(.mod-stacked) .workspace-tab-header,
+.anp-alternate-tab-toggle .mod-vertical:not(.mod-left-split):not(.mod-right-split) .workspace-tabs:not(.mod-stacked) .workspace-tab-header {
+  background: var(--tab-background);
+  border-radius: var(--anp-safari-tab-radius, 6px);
+  box-shadow: none !important;
+  height: var(--tab-height);
+  padding: 0 !important;
+  transition: 400ms, background-color 150ms ease-in-out;
+}
+
+.anp-alternate-tab-toggle .mod-root .workspace-tabs:not(.mod-stacked) .workspace-tab-header {
+  border: var(--anp-safari-border-width, 1px) solid var(--tab-outline-color);
+  max-width: var(--tab-max-width);
+}
+
+.anp-alternate-tab-toggle.anp-alt-tab-anim-toggle .mod-root .workspace-tabs:not(.mod-stacked) .workspace-tab-header {
+  transition: 400ms, background-color 150ms ease-in-out;
+}
+
+.anp-alternate-tab-toggle .workspace-tabs:not(.mod-stacked) .workspace-tab-header:first-child {
+  margin-left: 0;
+}
+
+.anp-alternate-tab-toggle .mod-root:not(.mod-left-split):not(.mod-right-split) .workspace-tabs:not(.mod-stacked) .workspace-tab-header-inner {
+  padding: 7px 8px;
+}
+
+.anp-alternate-tab-toggle .mod-root:not(.mod-left-split):not(.mod-right-split) .workspace-tabs:not(.mod-stacked) .workspace-tab-header-inner {
+  padding: 0 0px 0 px;
+  transition: 400ms, background-color 150ms ease-in-out, max-width 400ms;
+}
+.anp-alternate-tab-toggle .mod-root:not(.mod-left-split):not(.mod-right-split) .workspace-tabs:not(.mod-stacked) .workspace-tab-header-inner,
+.anp-alternate-tab-toggle .mod-root:not(.mod-left-split):not(.mod-right-split) .workspace-tabs:not(.mod-stacked) .workspace-tab-header-inner-close-button,
+.anp-alternate-tab-toggle .mod-root:not(.mod-left-split):not(.mod-right-split) .workspace-tabs:not(.mod-stacked) .workspace-tab-header-inner-icon {
+  color: var(--text-muted);
+}
+
+.anp-alternate-tab-toggle .workspace .mod-root .workspace-tab-header-inner::after {
+  display: none;
+}
+
+.anp-alternate-tab-toggle .mod-root:not(.mod-left-split):not(.mod-right-split) .workspace-tabs:not(.mod-stacked) .workspace-tab-header.is-active {
+  background-color: var(--background-primary);
+  flex-grow: 1.67;
+  max-width: var(--tab-max-width-active);
+}
+
+.anp-alternate-tab-toggle .mod-root .workspace-tabs:not(.mod-stacked) .workspace-tab-header.is-active .workspace-tab-header-inner-title {
+  color: var(--color-accent);
+}
+
+.anp-alternate-tab-toggle .mod-root .workspace-tabs:not(.mod-stacked) .workspace-tab-header.is-active .workspace-tab-header-inner,
+.anp-alternate-tab-toggle .mod-root .workspace-tabs:not(.mod-stacked) .workspace-tab-header.is-active .workspace-tab-header-inner-close-button,
+.anp-alternate-tab-toggle .mod-root .workspace-tabs:not(.mod-stacked) .workspace-tab-header.is-active .workspace-tab-header-inner-icon,
+.anp-alternate-tab-toggle .mod-root .workspace-tabs:not(.mod-stacked) .workspace-tab-header.is-active .workspace-tab-header-inner-title {
+  color: var(--text-faint);
+}
+.anp-alternate-tab-toggle .mod-root .workspace-tabs:not(.mod-stacked) .workspace-tab-header.is-active .workspace-tab-header-inner:hover {
+  background-color: rgba(var(--ctp-surface1), 0.4);
+}
+
+.anp-alternate-tab-toggle .mod-root .workspace-tabs:not(.mod-stacked).mod-active .workspace-tab-header.is-active .workspace-tab-header-inner,
+.anp-alternate-tab-toggle .mod-root .workspace-tabs:not(.mod-stacked).mod-active .workspace-tab-header.is-active .workspace-tab-header-inner-close-button,
+.anp-alternate-tab-toggle .mod-root .workspace-tabs:not(.mod-stacked).mod-active .workspace-tab-header.is-active .workspace-tab-header-inner-icon,
+.anp-alternate-tab-toggle .mod-root .workspace-tabs:not(.mod-stacked).mod-active .workspace-tab-header.is-active .workspace-tab-header-inner-title {
+  color: var(--color-accent) !important;
+}
+
+.anp-alternate-tab-toggle .mod-root .workspace-tabs:not(.mod-stacked) .workspace-tab-header.is-active:hover {
+  background-color: var(--background-modifier-border);
+}
+
+.anp-alternate-tab-toggle .sidebar-toggle-button.mod-left,
+.anp-alternate-tab-toggle .sidebar-toggle-button.mod-right {
+  align-items: left;
+}
+
+.anp-alternate-tab-toggle .sidebar-toggle-button.mod-left .clickable-icon,
+.anp-alternate-tab-toggle .sidebar-toggle-button.mod-right .clickable-icon {
+  height: var(--tab-height);
+}
+
+.anp-colorful-frame.anp-card-layout.anp-alternate-tab-toggle .mod-vertical .workspace-tab-header {
+  --icon-color: var(--text-muted);
+  --icon-color-active: var(--text-accent);
+  --icon-color-focused: var(--text-normal);
+  --icon-color-hover: var(--text-muted);
+  --tab-text-color: var(--text-faint);
+  --tab-text-color-active: var(--text-muted);
+  --tab-text-color-focused: var(--text-muted);
+  --tab-text-color-focused-active: var(--text-muted);
+  --tab-text-color-focused-active-current: var(--text-normal);
+  --tab-text-color-focused-highlighted: var(--text-accent);
+}
+
+/* ========================================
+Albus-1.4 设置页面卡片样式
+======================================== */
+/* 设置界面的宽度设置 */
+.modal.mod-settings.mod-settings.mod-settings.mod-settings {
+  /* min-width: 1200px !important; */
+}
+
+/* 2024-12-17 参考Huajin的obsidian-settings-management插件的样式 https://github.com/xhuajin/obsidian-settings-management/blob/master/src/styles.css */
+/* 快捷键列表 */
+body:not(.hotkey-layout) .vertical-tabs-container .vertical-tab-content>.hotkey-list-container,
+/* 核心插件列表 */
+body:not(.plugin-layout) .vertical-tabs-container .plugin-list-plugins>div:not(.setting-item),
+/* 第三方插件列表 */
+body:not(.installed-plugin-layout) .vertical-tabs-container .installed-plugins-container {
+  display: grid;
+  gap: 15px;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+
+  /* 子项目设置 */
+  .setting-item:not(:has(~.setting-item-heading)):not(.setting-item-heading) {
+    border: 1px solid var(--background-modifier-border);
+    border-radius: 8px;
+    padding: 1em;
+  }
+
+  .setting-item:is(:has(~.setting-item-heading), .setting-item-heading) {
+    grid-column: 1 / -1;
+  }
+
+  .setting-item-info {
+
+    overflow: hidden;
+    overflow-wrap: anywhere;
+  }
+}
+
+/* 第三方插件列表 按钮微调*/
+.installed-plugins-container .setting-item.mod-toggle {
+  position: relative;
+  display: flex;
+  flex-flow: column nowrap;
+
+  .setting-item-info {
+    flex: 2 0 auto;
+    margin-left: 10px;
+    width: 100%;
+  }
+}
+
+.installed-plugins-container .setting-item-control {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: right;
+  right: 0px;
+  width: 100%;
+  flex: 0;
+}
+
+/* ========================================
+Albus-1.5 隐藏滚动条
+======================================== */
+body:is(.btlfc-s-bar-switch) ::-webkit-scrollbar-thumb  {
+  display: none;
+}
+
+/* ========================================
+Albus-1.6 编辑模式下光标所在行高亮显示
+======================================== */
+/* Active line background */
+.markdown-source-view.mod-cm6 .cm-line.cm-active{
+  background-color: rgb(41, 36, 85)
+}
+
+/*Active line number */
+
+.markdown-source-view.mod-cm6  .cm-lineNumbers .cm-gutterElement.cm-active {
+font-weight: 600;
+color: grey;
+}
+
+/* ========================================
+Albus-1.7 彩虹文件目录
+======================================== */
+.workspace-leaf-content[data-type="file-explorer"] {
+  --folder-bg-opacity: var(--folder-bg-opacity-setting, 0.08);
+  --folder-hover-opacity: var(--folder-hover-opacity-setting, 0.12);
+  --folder-sub-bg-opacity: var(--folder-sub-bg-opacity-setting, 0.04);
+  --folder-sub-text-opacity: var(--folder-sub-text-opacity-setting, 0.7);
+  --folder-text-opacity: var(--folder-text-opacity-setting, 0.85);
+
+  /* 背景色 - 基于主题的暖色调 */
+  --folder-bg-1: rgba(var(--color-red-rgb), var(--folder-bg-opacity));
+  --folder-bg-2: rgba(var(--color-blue-rgb), var(--folder-bg-opacity));
+  --folder-bg-3: rgba(var(--color-green-rgb), var(--folder-bg-opacity));
+  --folder-bg-4: rgba(var(--color-orange-rgb), var(--folder-bg-opacity));
+  --folder-bg-5: rgba(var(--color-purple-rgb), var(--folder-bg-opacity));
+  --folder-bg-6: rgba(var(--color-cyan-rgb), var(--folder-bg-opacity));
+  --folder-bg-7: rgba(var(--color-pink-rgb), var(--folder-bg-opacity));
+
+  /* 字体色 - 基于主题的深色系 */
+  --folder-text-1: rgba(var(--color-red-rgb), var(--folder-text-opacity));
+  --folder-text-2: rgba(var(--color-blue-rgb), var(--folder-text-opacity));
+  --folder-text-3: rgba(var(--color-green-rgb), var(--folder-text-opacity));
+  --folder-text-4: rgba(var(--color-orange-rgb), var(--folder-text-opacity));
+  --folder-text-5: rgba(var(--color-purple-rgb), var(--folder-text-opacity));
+  --folder-text-6: rgba(var(--color-cyan-rgb), var(--folder-text-opacity));
+  --folder-text-7: rgba(var(--color-pink-rgb), var(--folder-text-opacity));
+
+  /* 悬停状态 - 稍微加深背景 */
+  --folder-hover-1: rgba(var(--color-red-rgb), var(--folder-hover-opacity));
+  --folder-hover-2: rgba(var(--color-blue-rgb), var(--folder-hover-opacity));
+  --folder-hover-3: rgba(var(--color-green-rgb), var(--folder-hover-opacity));
+  --folder-hover-4: rgba(var(--color-orange-rgb), var(--folder-hover-opacity));
+  --folder-hover-5: rgba(var(--color-purple-rgb), var(--folder-hover-opacity));
+  --folder-hover-6: rgba(var(--color-cyan-rgb), var(--folder-hover-opacity));
+  --folder-hover-7: rgba(var(--color-pink-rgb), var(--folder-hover-opacity));
+
+  /* 子目录淡化色 */
+  --folder-sub-bg-1: rgba(var(--color-red-rgb), var(--folder-sub-bg-opacity));
+  --folder-sub-bg-2: rgba(var(--color-blue-rgb), var(--folder-sub-bg-opacity));
+  --folder-sub-bg-3: rgba(var(--color-green-rgb), var(--folder-sub-bg-opacity));
+  --folder-sub-bg-4: rgba(
+    var(--color-orange-rgb),
+    var(--folder-sub-bg-opacity)
+  );
+  --folder-sub-bg-5: rgba(
+    var(--color-purple-rgb),
+    var(--folder-sub-bg-opacity)
+  );
+  --folder-sub-bg-6: rgba(var(--color-cyan-rgb), var(--folder-sub-bg-opacity));
+  --folder-sub-bg-7: rgba(var(--color-pink-rgb), var(--folder-sub-bg-opacity));
+
+  --folder-sub-text-1: rgba(
+    var(--color-red-rgb),
+    var(--folder-sub-text-opacity)
+  );
+  --folder-sub-text-2: rgba(
+    var(--color-blue-rgb),
+    var(--folder-sub-text-opacity)
+  );
+  --folder-sub-text-3: rgba(
+    var(--color-green-rgb),
+    var(--folder-sub-text-opacity)
+  );
+  --folder-sub-text-4: rgba(
+    var(--color-orange-rgb),
+    var(--folder-sub-text-opacity)
+  );
+  --folder-sub-text-5: rgba(
+    var(--color-purple-rgb),
+    var(--folder-sub-text-opacity)
+  );
+  --folder-sub-text-6: rgba(
+    var(--color-cyan-rgb),
+    var(--folder-sub-text-opacity)
+  );
+  --folder-sub-text-7: rgba(
+    var(--color-pink-rgb),
+    var(--folder-sub-text-opacity)
+  );
+}
+
+/* 顶级目录配色 - 根据序号循环展示7种颜色 */
+.nav-files-container
+  > div
+  > .tree-item.nav-folder:nth-child(7n + 1)
+  > .nav-folder-title {
+  background-color: var(--folder-bg-1);
+  color: var(--folder-text-1);
+  --icon-color: var(--nav-collapse-icon-color);
+  --nav-collapse-icon-color: var(--folder-text-1);
+}
+
+.nav-files-container
+  > div
+  > .tree-item.nav-folder:nth-child(7n + 2)
+  > .nav-folder-title {
+  background-color: var(--folder-bg-2);
+  color: var(--folder-text-2);
+  --icon-color: var(--nav-collapse-icon-color);
+  --nav-collapse-icon-color: var(--folder-text-2);
+}
+
+.nav-files-container
+  > div
+  > .tree-item.nav-folder:nth-child(7n + 3)
+  > .nav-folder-title {
+  background-color: var(--folder-bg-3);
+  color: var(--folder-text-3);
+  --icon-color: var(--nav-collapse-icon-color);
+  --nav-collapse-icon-color: var(--folder-text-3);
+}
+
+.nav-files-container
+  > div
+  > .tree-item.nav-folder:nth-child(7n + 4)
+  > .nav-folder-title {
+  background-color: var(--folder-bg-4);
+  color: var(--folder-text-4);
+  --icon-color: var(--nav-collapse-icon-color);
+  --nav-collapse-icon-color: var(--folder-text-4);
+}
+
+.nav-files-container
+  > div
+  > .tree-item.nav-folder:nth-child(7n + 5)
+  > .nav-folder-title {
+  background-color: var(--folder-bg-5);
+  color: var(--folder-text-5);
+  --icon-color: var(--nav-collapse-icon-color);
+  --nav-collapse-icon-color: var(--folder-text-5);
+}
+
+.nav-files-container
+  > div
+  > .tree-item.nav-folder:nth-child(7n + 6)
+  > .nav-folder-title {
+  background-color: var(--folder-bg-6);
+  color: var(--folder-text-6);
+  --icon-color: var(--nav-collapse-icon-color);
+  --nav-collapse-icon-color: var(--folder-text-6);
+}
+
+.nav-files-container
+  > div
+  > .tree-item.nav-folder:nth-child(7n)
+  > .nav-folder-title {
+  background-color: var(--folder-bg-7);
+  color: var(--folder-text-7);
+  --icon-color: var(--nav-collapse-icon-color);
+  --nav-collapse-icon-color: var(--folder-text-7);
+}
+
+/* 子目录配色 - 继承父目录颜色但更淡 */
+.nav-files-container
+  > div
+  > .tree-item.nav-folder:nth-child(7n + 1)
+  .tree-item-children
+  .nav-folder-title {
+  background-color: var(--folder-sub-bg-1);
+  color: var(--folder-sub-text-1);
+  --icon-color: var(--nav-collapse-icon-color);
+  --nav-collapse-icon-color: var(--folder-text-1);
+}
+
+.nav-files-container
+  > div
+  > .tree-item.nav-folder:nth-child(7n + 2)
+  .tree-item-children
+  .nav-folder-title {
+  background-color: var(--folder-sub-bg-2);
+  color: var(--folder-sub-text-2);
+  --icon-color: var(--nav-collapse-icon-color);
+  --nav-collapse-icon-color: var(--folder-text-2);
+}
+
+.nav-files-container
+  > div
+  > .tree-item.nav-folder:nth-child(7n + 3)
+  .tree-item-children
+  .nav-folder-title {
+  background-color: var(--folder-sub-bg-3);
+  color: var(--folder-sub-text-3);
+  --icon-color: var(--nav-collapse-icon-color);
+  --nav-collapse-icon-color: var(--folder-text-3);
+}
+
+.nav-files-container
+  > div
+  > .tree-item.nav-folder:nth-child(7n + 4)
+  .tree-item-children
+  .nav-folder-title {
+  background-color: var(--folder-sub-bg-4);
+  color: var(--folder-sub-text-4);
+  --icon-color: var(--nav-collapse-icon-color);
+  --nav-collapse-icon-color: var(--folder-text-4);
+}
+
+.nav-files-container
+  > div
+  > .tree-item.nav-folder:nth-child(7n + 5)
+  .tree-item-children
+  .nav-folder-title {
+  background-color: var(--folder-sub-bg-5);
+  color: var(--folder-sub-text-5);
+  --icon-color: var(--nav-collapse-icon-color);
+  --nav-collapse-icon-color: var(--folder-text-5);
+}
+
+.nav-files-container
+  > div
+  > .tree-item.nav-folder:nth-child(7n + 6)
+  .tree-item-children
+  .nav-folder-title {
+  background-color: var(--folder-sub-bg-6);
+  color: var(--folder-sub-text-6);
+  --icon-color: var(--nav-collapse-icon-color);
+  --nav-collapse-icon-color: var(--folder-text-6);
+}
+
+.nav-files-container
+  > div
+  > .tree-item.nav-folder:nth-child(7n)
+  .tree-item-children
+  .nav-folder-title {
+  background-color: var(--folder-sub-bg-7);
+  color: var(--folder-sub-text-7);
+  --icon-color: var(--nav-collapse-icon-color);
+  --nav-collapse-icon-color: var(--folder-text-7);
+}
+
+/* 顶级目录悬停效果 */
+.nav-files-container
+  > div
+  > .tree-item.nav-folder:nth-child(7n + 1)
+  > .nav-folder-title:hover {
+  background-color: var(--folder-hover-1);
+}
+
+.nav-files-container
+  > div
+  > .tree-item.nav-folder:nth-child(7n + 2)
+  > .nav-folder-title:hover {
+  background-color: var(--folder-hover-2);
+}
+
+.nav-files-container
+  > div
+  > .tree-item.nav-folder:nth-child(7n + 3)
+  > .nav-folder-title:hover {
+  background-color: var(--folder-hover-3);
+}
+
+.nav-files-container
+  > div
+  > .tree-item.nav-folder:nth-child(7n + 4)
+  > .nav-folder-title:hover {
+  background-color: var(--folder-hover-4);
+}
+
+.nav-files-container
+  > div
+  > .tree-item.nav-folder:nth-child(7n + 5)
+  > .nav-folder-title:hover {
+  background-color: var(--folder-hover-5);
+}
+
+.nav-files-container
+  > div
+  > .tree-item.nav-folder:nth-child(7n + 6)
+  > .nav-folder-title:hover {
+  background-color: var(--folder-hover-6);
+}
+
+.nav-files-container
+  > div
+  > .tree-item.nav-folder:nth-child(7n)
+  > .nav-folder-title:hover {
+  background-color: var(--folder-hover-7);
+}
+
+/* ========================================
+Albus-2 排版
+======================================== */
+
+/* ========================================
+Albus-2.1 默认阅读模式下隐藏文档属性
+======================================== */
+.doc--hide body {
+    --metadata-display-reading: none ;
+}
+
+.doc--hide .workspace-leaf-content[data-mode="preview"]
+:is(.markdown-preview-view,.markdown-rendered)
+.metadata-container{
+    display: none ;
+}
+
+.doc--hide .workspace-leaf-content[data-mode="preview"]
+:is(.markdown-preview-view,.markdown-rendered).show-property
+.metadata-container{
+    display: unset  ;
+}
+
+.doc--hide .workspace-leaf-content[data-mode="source"]
+.markdown-source-view.hide-property
+.metadata-container{
+    display: none ;
+}
+
+.doc--hide :is(.markdown-preview-view,.markdown-rendered) {
+  & div[data-property-key="anything_is_ok"] {
+    display:none;
+  }
+}
+
+.doc--hide :is(.markdown-preview-view,.markdown-rendered) .metadata-property[data-property-key="cssclasses"],
+.doc--hide :is(.markdown-preview-view,.markdown-rendered) .metadata-property[data-property-key="cssclass"] {
+  display: none;
+}
+
+.doc--hide :is(.markdown-preview-view,.markdown-rendered).anything_is_ok {
+  & div[data-property-key="anything_is_ok"] {
+    display:none;
+  }
+}
+
+.doc--hide :is(.markdown-preview-view,.markdown-rendered).hide-lex .metadata-property[data-property-key="lex"]
+{
+  display: none;
+}
+
+.doc--hide .is-live-preview.hide-lex .metadata-property[data-property-key="lex"] {
+  display: none;
+}
+
+/* 确保容器正确约束 */
+/* 改进后的CSS代码 */
+
+.doc--ball .workspace-leaf-content {
+  overflow: visible;
+  position: relative;
+}
+
+.doc--ball .metadata-properties-heading {
+  display: none !important;
+}
+
+.doc--ball .🟢 .metadata-container{
+  background-color: #56cf8e !important;
+}
+
+.doc--ball .🟡 .metadata-container{
+  background-color: #ffce65 !important;
+}
+
+.doc--ball .🟠 .metadata-container{
+  background-color: #fc8747 !important;
+}
+
+.doc--ball .🔴 .metadata-container{
+  background-color: #ec4558 !important;
+}
+
+.doc--ball .metadata-container {
+  background: var(--color-accent);
+  border-radius: 100%;
+  box-shadow: 
+    0 0 0 1px var(--background-modifier-border),
+    0 3px 10px rgba(0,0,0,0.1),
+    inset 0 1px 0 rgba(255,255,255,0.2);
+  cursor: pointer;
+  height: 36px;
+  overflow: hidden;
+  position: absolute;
+  right: 12px;
+  top: 12px;
+  transition: 
+    width 0.35s cubic-bezier(0.18, 1.25, 0.4, 1),
+    height 0.35s cubic-bezier(0.18, 1.25, 0.4, 1),
+    border-radius 0.3s ease 0.05s;
+  width: 36px;
+  z-index: 100;
+}
+
+.doc--ball .metadata-content {
+  height: auto !important;
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  padding: 0 !important;
+  pointer-events: none;
+  position: relative;
+  transition: 
+    opacity 0.25s ease 0.1s,
+    padding 0.25s ease 0.1s;
+  width: 360px;
+  background: var(--background-primary);
+  border-radius: 12px;
+}
+
+/* 悬停和焦点状态 */
+.doc--ball .metadata-container:focus-within,
+.doc--ball .metadata-container:hover,
+.doc--ball .metadata-container.is-active {
+  border: none !important;
+  border-radius: 13px;
+  height: auto !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  right: 12px;
+  transition-delay: 0s;
+  width: 360px;
+  box-shadow: 
+    0 12px 30px rgba(0, 0, 0, 0.3),
+    inset 0 0 16px rgba(255, 255, 255, 0.3),
+    inset 0 0 2px rgba(255, 255, 255, 0.7);
+}
+
+.doc--ball .metadata-container:focus-within .metadata-content,
+.doc--ball .metadata-container:hover .metadata-content,
+.doc--ball .metadata-container.is-active .metadata-content {
+  max-height: none !important; /* 限制最大高度避免过度展开 */
+  opacity: 1;
+  padding: 20px !important;
+  pointer-events: auto;
+  transition: 
+    opacity 0.3s ease 0.15s,
+    padding 0.3s ease 0.15s,
+    max-height 0.5s ease;
+}
+
+/* 触发指示器 */
+.doc--ball .metadata-trigger {
+  align-items: center;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  display: flex;
+  height: 36px;
+  justify-content: center;
+  pointer-events: none;
+  position: absolute;
+  right: 0;
+  top: 0;
+  transition: 
+    opacity 0.2s ease, 
+    transform 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+  width: 36px;
+  z-index: 101;
+}
+
+.doc--ball .metadata-trigger::before {
+  color: white;
+  content: "i";
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.doc--ball .metadata-container:focus-within .metadata-trigger,
+.doc--ball .metadata-container:hover .metadata-trigger,
+.doc--ball .metadata-container.is-active .metadata-trigger {
+  opacity: 0;
+  transform: scale(1.5) rotate(90deg);
+}
+
+/* 增强的悬停保护区域 */
+.doc--ball .metadata-container::before {
+  content: "";
+  left: -15px;
+  pointer-events: auto;
+  position: absolute;
+  right: -15px;
+  top: -15px;
+  z-index: -1;
+  bottom: -15px;
+}
+
+/* 确保子元素不会破坏hover状态 */
+.doc--ball .metadata-content * {
+  pointer-events: auto;
+}
+
+/* 移动设备友好优化 */
+@media (max-width: 400px) {
+  .doc--ball .metadata-container:focus-within,
+  .doc--ball .metadata-container:hover,
+  .doc--ball .metadata-container.is-active {
+    right: 20px;
+    width: calc(100vw - 40px);
+  }
+  
+  .doc--ball .metadata-content {
+    width: 100%;
+  }
+}
+
+/* 暗色模式优化 */
+.theme-dark .doc--ball .metadata-container {
+  box-shadow: 
+    0 0 0 1px var(--background-modifier-border),
+    0 3px 15px rgba(0,0,0,0.4),
+    inset 0 1px 0 rgba(255,255,255,0.1);
+}
+
+/* 无障碍访问改进 */
+.doc--ball .metadata-container:focus {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+/* ========================================
+Albus-2.2 图片添加 dark 参数可在深色模式下反色
+======================================== */
+.theme-dark img[alt*="dark"] {
+  filter: invert(1) hue-rotate(180deg) !important;
+}
+
+.theme-dark .image-embed[src*="#dark"] img {
+  filter: invert(1) hue-rotate(180deg) !important;
+}
+
+/* ========================================
+Albus-2.4 Blue Topaz 图片排版方案 (已调整兼容反色参数)
+======================================== */
+/* ============ */
+/*image position*/
+/* ============ */
+img[alt$="left"]:not([class*="emoji"]),
+img[alt$="Left"]:not([class*="emoji"]),
+img[alt$="LEFT"]:not([class*="emoji"]),
+img[alt$="L"]:not([class*="emoji"]),
+.markdown-source-view.mod-cm6 img[alt$="left"]:not([class*="emoji"]),
+.markdown-source-view.mod-cm6 img[alt$="Left"]:not([class*="emoji"]),
+.markdown-source-view.mod-cm6 img[alt$="LEFT"]:not([class*="emoji"]),
+.markdown-source-view.mod-cm6 img[alt$="L"]:not([class*="emoji"]),
+.internal-embed.image-embed.is-loaded[alt$="left"] img[alt$="left"]:not([class*="emoji"]),
+.internal-embed.image-embed.is-loaded[alt$="Left"] img[alt$="Left"]:not([class*="emoji"]),
+.internal-embed.image-embed.is-loaded[alt$="LEFT"] img[alt$="LEFT"]:not([class*="emoji"]),
+.internal-embed.image-embed.is-loaded[alt$="L"] img[alt$="L"]:not([class*="emoji"]),
+body:not(.image-zoom) .view-content img[alt$="left"]:not([class*="emoji"]),
+body:not(.image-zoom) .view-content img[alt$="Left"]:not([class*="emoji"]),
+body:not(.image-zoom) .view-content img[alt$="LEFT"]:not([class*="emoji"]),
+body:not(.image-zoom) .view-content img[alt$="L"]:not([class*="emoji"]) {
+  display: block;
+  margin: auto !important;
+  margin-left: 0 !important;
+}
+
+img[alt$="right"]:not([class*="emoji"]),
+img[alt$="Right"]:not([class*="emoji"]),
+img[alt$="RIGHT"]:not([class*="emoji"]),
+img[alt$="R"]:not([class*="emoji"]),
+.markdown-source-view.mod-cm6 img[alt$="right"]:not([class*="emoji"]),
+.markdown-source-view.mod-cm6 img[alt$="Right"]:not([class*="emoji"]),
+.markdown-source-view.mod-cm6 img[alt$="RIGHT"]:not([class*="emoji"]),
+.markdown-source-view.mod-cm6 img[alt$="R"]:not([class*="emoji"]),
+.internal-embed.image-embed.is-loaded[alt$="right"] img[alt$="right"]:not([class*="emoji"]),
+.internal-embed.image-embed.is-loaded[alt$="Right"] img[alt$="Right"]:not([class*="emoji"]),
+.internal-embed.image-embed.is-loaded[alt$="RIGHT"] img[alt$="RIGHT"]:not([class*="emoji"]),
+.internal-embed.image-embed.is-loaded[alt$="R"] img[alt$="R"]:not([class*="emoji"]),
+body:not(.image-zoom) .view-content img[alt$="right"]:not([class*="emoji"]),
+body:not(.image-zoom) .view-content img[alt$="Right"]:not([class*="emoji"]),
+body:not(.image-zoom) .view-content img[alt$="RIGHT"]:not([class*="emoji"]),
+body:not(.image-zoom) .view-content img[alt$="R"]:not([class*="emoji"]) {
+  display: block;
+  margin: auto !important;
+  margin-right: 0 !important;
+}
+
+img[alt$="centre"]:not([class*="emoji"]),
+img[alt$="center"]:not([class*="emoji"]),
+img[alt$="CENTRE"]:not([class*="emoji"]),
+img[alt$="CENTER"]:not([class*="emoji"]),
+img[alt$="Center"]:not([class*="emoji"]),
+img[alt$="Centre"]:not([class*="emoji"]),
+img[alt$="C"]:not([class*="emoji"]),
+.markdown-source-view.mod-cm6 img[alt$="centre"]:not([class*="emoji"]),
+.markdown-source-view.mod-cm6 img[alt$="center"]:not([class*="emoji"]),
+.markdown-source-view.mod-cm6 img[alt$="Centre"]:not([class*="emoji"]),
+.markdown-source-view.mod-cm6 img[alt$="Center"]:not([class*="emoji"]),
+.markdown-source-view.mod-cm6 img[alt$="CENTRE"]:not([class*="emoji"]),
+.markdown-source-view.mod-cm6 img[alt$="CENTER"]:not([class*="emoji"]),
+.markdown-source-view.mod-cm6 img[alt$="C"]:not([class*="emoji"]),
+.internal-embed.image-embed.is-loaded[alt$="centre"] img[alt$="right"]:not([class*="emoji"]),
+.internal-embed.image-embed.is-loaded[alt$="center"] img[alt$="Right"]:not([class*="emoji"]),
+.internal-embed.image-embed.is-loaded[alt$="Centre"] img[alt$="RIGHT"]:not([class*="emoji"]),
+.internal-embed.image-embed.is-loaded[alt$="Center"] img[alt$="R"]:not([class*="emoji"]),
+.internal-embed.image-embed.is-loaded[alt$="CENTRE"] img[alt$="Right"]:not([class*="emoji"]),
+.internal-embed.image-embed.is-loaded[alt$="CENTER"] img[alt$="RIGHT"]:not([class*="emoji"]),
+.internal-embed.image-embed.is-loaded[alt$="C"] img[alt$="R"]:not([class*="emoji"]),
+body:not(.image-zoom) .view-content img[alt$="centre"]:not([class*="emoji"]),
+body:not(.image-zoom) .view-content img[alt$="center"]:not([class*="emoji"]),
+body:not(.image-zoom) .view-content img[alt$="Centre"]:not([class*="emoji"]),
+body:not(.image-zoom) .view-content img[alt$="Center"]:not([class*="emoji"]),
+body:not(.image-zoom) .view-content img[alt$="CENTRE"]:not([class*="emoji"]),
+body:not(.image-zoom) .view-content img[alt$="CENTER"]:not([class*="emoji"]),
+body:not(.image-zoom) .view-content img[alt$="C"]:not([class*="emoji"]) {
+  display: block;
+  margin: auto !important;
+}
+
+img[alt$="inline"]:not([class*="emoji"]),
+img[alt$="Inline"]:not([class*="emoji"]),
+img[alt$="INLINE"]:not([class*="emoji"]),
+img[alt$="inl"]:not([class*="emoji"]),
+img[alt$="INL"]:not([class*="emoji"]),
+img[alt$="Inl"]:not([class*="emoji"]) {
+  display: inline !important;
+  padding: 0.05em 0.05em !important;
+  vertical-align: bottom;
+}
+
+img[alt$="inlineL"]:not([class*="emoji"]),
+img[alt$="InlineL"]:not([class*="emoji"]),
+img[alt$="INLINEL"]:not([class*="emoji"]),
+img[alt$="inlL"]:not([class*="emoji"]),
+img[alt$="INLL"]:not([class*="emoji"]),
+img[alt$="InlL"]:not([class*="emoji"]) {
+  float: left;
+  padding: 0.5em 0.5em 0.5em 0.5em !important;
+}
+
+img[alt$="inlineR"]:not([class*="emoji"]),
+img[alt$="InlineR"]:not([class*="emoji"]),
+img[alt$="INLINER"]:not([class*="emoji"]),
+img[alt$="inlR"]:not([class*="emoji"]),
+img[alt$="INLR"]:not([class*="emoji"]),
+img[alt$="InlR"]:not([class*="emoji"]) {
+  float: right;
+  padding: 0.5em 0.5em 0.5em 0.5em !important;
+}
+
+img.excalidraw-svg-right,
+img.excalidraw-svg-Right,
+img.excalidraw-svg-RIGHT,
+img.excalidraw-svg-R {
+  float: right !important;
+}
+
+img.excalidraw-svg-left,
+img.excalidraw-svg-Left,
+img.excalidraw-svg-LEFT,
+img.excalidraw-svg-L {
+  float: left !important;
+}
+
+img.excalidraw-svg-right,
+img.excalidraw-svg-Right,
+img.excalidraw-svg-RIGHT,
+img.excalidraw-svg-R,
+img.excalidraw-svg-left,
+img.excalidraw-svg-Left,
+img.excalidraw-svg-LEFT,
+img.excalidraw-svg-L {
+  display: table;
+  width: 100%
+}
+
+/*=================图片自适应横排==================/
+/* image-grid-1 */
+/* adapted from https://github.com/Lithou/Sandbox/blob/main/.obsidian/snippets/pub-Image%20Flags.css */
+body span[alt*="+grid"] {
+  display: table-cell;
+  padding: 5px;
+  vertical-align: middle;
+}
+
+.markdown-source-view.is-live-preview .internal-embed.image-embed.is-loaded[alt*="+grid"] {
+  display: inline-table;
+  max-width: 25%;
+  vertical-align: middle;
+}
+
+/* cssclass: image-grid */
+/* image-grid-2 */
+/* adapted from https://github.com/iEchoxu/obsidian_orange/blob/main/.obsidian/snippets/image-grid.css */
+
+
+.img-grid :is(.markdown-preview-section,.markdown-rendered)>div>p>.image-embed[alt*="."]:last-child {
+  padding-right: 0;
+}
+.img-grid :is(.markdown-preview-section,.markdown-rendered)>div>p>.image-embed[alt*="."]:first-child {
+  padding-left: 0;
+}
+.img-grid :is(.markdown-preview-section,.markdown-rendered)>div hr {
+  width: 100%;
+}
+.img-grid span.image-embed[alt*="."] {
+  display: table-cell;
+}
+.img-grid img[alt*="."] {
+  max-height: 100vh;
+  object-fit: cover;
+}
+
+.img-grid .markdown-preview-section .el-embed-image img:not([width]),.img-grid .markdown-preview-section video{
+  width:100%
+}
+.img-grid .markdown-preview-section>.el-embed-image>p{
+  display:grid;
+  grid-column-gap:0.5rem;
+  grid-row-gap:0;
+  grid-template-columns:repeat(auto-fit,minmax(0,1fr))
+}
+.img-grid .markdown-preview-section>.el-embed-image>p>br{
+  display:none
+}
+.img-grid .markdown-preview-section>.el-embed-image>p>img{
+  align-self:stretch
+  object-fit:cover;
+}
+.img-grid .markdown-preview-section>.el-embed-image>p>.internal-embed img{
+  align-self:stretch;
+  height:100%;
+  object-fit:cover;
+}
+
+.img-grid-ratio .markdown-preview-section>.el-embed-image>p>.internal-embed img
+,.img-grid.img-grid-ratio .markdown-preview-section>.el-embed-image>p>.internal-embed img{
+  align-self:center;
+  height:100%;
+  object-fit:contain;
+}
+@media (max-width:400pt){
+  .el-embed-image{
+    margin-top:.25rem
+  }
+  .img-grid .markdown-preview-section>.el-embed-image>p{
+    grid-column-gap:0.25rem
+  }
+}
+
+/* img captions */
+/* modified from Discordian theme by @radekkozak */
+:is(.markdown-preview-view,.markdown-rendered,.markdown-source-view.mod-cm6.is-live-preview) .image-embed[src*="center"],
+:is(.markdown-preview-view,.markdown-rendered,.markdown-source-view.mod-cm6.is-live-preview) .image-embed[src*="centre"],
+:is(.markdown-preview-view,.markdown-rendered,.markdown-source-view.mod-cm6.is-live-preview) .image-embed[src*="Centre"],
+:is(.markdown-preview-view,.markdown-rendered,.markdown-source-view.mod-cm6.is-live-preview) .image-embed[src*="Center"],
+:is(.markdown-preview-view,.markdown-rendered,.markdown-source-view.mod-cm6.is-live-preview) .image-embed[src*="CENTRE"],
+:is(.markdown-preview-view,.markdown-rendered,.markdown-source-view.mod-cm6.is-live-preview) .image-embed[src*="CENTER"],
+:is(.markdown-preview-view,.markdown-rendered,.markdown-source-view.mod-cm6.is-live-preview) .image-embed[src*="C"] {
+  clear: both;
+  display: block;
+  margin: 0 auto !important;
+  width: fit-content;
+}
+
+:is(.markdown-preview-view,.markdown-rendered,.markdown-source-view.mod-cm6.is-live-preview) .image-embed[src*="center"]::after,
+:is(.markdown-preview-view,.markdown-rendered,.markdown-source-view.mod-cm6.is-live-preview) .image-embed[src*="centre"]::after,
+:is(.markdown-preview-view,.markdown-rendered,.markdown-source-view.mod-cm6.is-live-preview) .image-embed[src*="Centre"]::after,
+:is(.markdown-preview-view,.markdown-rendered,.markdown-source-view.mod-cm6.is-live-preview) .image-embed[src*="Center"]::after,
+:is(.markdown-preview-view,.markdown-rendered,.markdown-source-view.mod-cm6.is-live-preview) .image-embed[src*="CENTRE"]::after,
+:is(.markdown-preview-view,.markdown-rendered,.markdown-source-view.mod-cm6.is-live-preview) .image-embed[src*="CENTER"]::after,
+:is(.markdown-preview-view,.markdown-rendered,.markdown-source-view.mod-cm6.is-live-preview) .image-embed[src*="C"]::after {
+  caption-side: bottom;
+  content: attr(alt);
+  display: block;
+  font-size: 0.85rem;
+  margin: 0.5rem 0;
+  text-align: center;
+}
+
+:is(.markdown-preview-view,.markdown-rendered,.markdown-source-view.mod-cm6.is-live-preview) .image-embed[src*="left"],
+:is(.markdown-preview-view,.markdown-rendered,.markdown-source-view.mod-cm6.is-live-preview) .image-embed[src*="LEFT"],
+:is(.markdown-preview-view,.markdown-rendered,.markdown-source-view.mod-cm6.is-live-preview) .image-embed[src*="Left"],
+:is(.markdown-preview-view,.markdown-rendered,.markdown-source-view.mod-cm6.is-live-preview) .image-embed[src*="L"] {
+  clear: both;
+  display: table;
+  float: left;
+  margin: 0.5rem 1rem 0.5rem 0 !important;
+  position: relative;
+}
+
+:is(.markdown-preview-view,.markdown-rendered,.markdown-source-view.mod-cm6.is-live-preview) .image-embed[src*="left"]::after,
+:is(.markdown-preview-view,.markdown-rendered,.markdown-source-view.mod-cm6.is-live-preview) .image-embed[src*="LEFT"]::after,
+:is(.markdown-preview-view,.markdown-rendered,.markdown-source-view.mod-cm6.is-live-preview) .image-embed[src*="Left"]::after,
+:is(.markdown-preview-view,.markdown-rendered,.markdown-source-view.mod-cm6.is-live-preview) .image-embed[src*="L"]::after {
+  caption-side: bottom;
+  content: attr(alt);
+  display: table-caption;
+  font-size: 0.85rem;
+  margin: 0.5rem 0 1rem;
+  padding: 0 0.5rem;
+  text-align: center;
+}
+
+:is(.markdown-preview-view,.markdown-rendered,.markdown-source-view.mod-cm6.is-live-preview) .image-embed[src*="right"],
+:is(.markdown-preview-view,.markdown-rendered,.markdown-source-view.mod-cm6.is-live-preview) .image-embed[src*="RIGHT"],
+:is(.markdown-preview-view,.markdown-rendered,.markdown-source-view.mod-cm6.is-live-preview) .image-embed[src*="Right"],
+:is(.markdown-preview-view,.markdown-rendered,.markdown-source-view.mod-cm6.is-live-preview) .image-embed[src*="R"] {
+  clear: both;
+  display: table;
+  float: right;
+  margin: 0.5rem 0 0.5rem 1rem !important;
+  position: relative;
+}
+
+:is(.markdown-preview-view,.markdown-rendered,.markdown-source-view.mod-cm6.is-live-preview) .image-embed[src*="right"]::after,
+:is(.markdown-preview-view,.markdown-rendered,.markdown-source-view.mod-cm6.is-live-preview) .image-embed[src*="RIGHT"]::after,
+:is(.markdown-preview-view,.markdown-rendered,.markdown-source-view.mod-cm6.is-live-preview) .image-embed[src*="Right"]::after,
+:is(.markdown-preview-view,.markdown-rendered,.markdown-source-view.mod-cm6.is-live-preview) .image-embed[src*="R"]::after {
+  caption-side: bottom;
+  content: attr(alt);
+  display: table-caption;
+  font-size: 0.85rem;
+  margin: 0.5rem 0 1rem;
+  padding: 0 0.5rem;
+  text-align: center;
+}
+
+:is(.markdown-preview-view,.markdown-rendered,.markdown-source-view.mod-cm6.is-live-preview) .image-embed[src*="inline"],
+:is(.markdown-preview-view,.markdown-rendered,.markdown-source-view.mod-cm6.is-live-preview) .image-embed[src*="Inline"],
+:is(.markdown-preview-view,.markdown-rendered,.markdown-source-view.mod-cm6.is-live-preview) .image-embed[src*="INLINE"],
+:is(.markdown-preview-view,.markdown-rendered,.markdown-source-view.mod-cm6.is-live-preview) .image-embed[src*="inl"],
+:is(.markdown-preview-view,.markdown-rendered,.markdown-source-view.mod-cm6.is-live-preview) .image-embed[src*="INL"],
+:is(.markdown-preview-view,.markdown-rendered,.markdown-source-view.mod-cm6.is-live-preview) .image-embed[src*="Inl"] {
+  display: inline-table;
+  margin: 0 auto !important;
+  width: fit-content;
+  clear: both;
+}
+
+:is(.markdown-preview-view,.markdown-rendered,.markdown-source-view.mod-cm6.is-live-preview) .image-embed[src*="inline"]::after,
+:is(.markdown-preview-view,.markdown-rendered,.markdown-source-view.mod-cm6.is-live-preview) .image-embed[src*="Inline"]::after,
+:is(.markdown-preview-view,.markdown-rendered,.markdown-source-view.mod-cm6.is-live-preview) .image-embed[src*="INLINE"]::after,
+:is(.markdown-preview-view,.markdown-rendered,.markdown-source-view.mod-cm6.is-live-preview) .image-embed[src*="inl"]::after,
+:is(.markdown-preview-view,.markdown-rendered,.markdown-source-view.mod-cm6.is-live-preview) .image-embed[src*="INL"]::after,
+:is(.markdown-preview-view,.markdown-rendered,.markdown-source-view.mod-cm6.is-live-preview) .image-embed[src*="Inl"]::after {
+  caption-side: bottom;
+  content: attr(alt);
+  display: block;
+  font-size: 0.85rem;
+  margin: 0.5rem 0;
+  padding: 0 0.7em;
+  text-align: center;
+}
+
+/* ========================================
+Albus-2.16 代码块样式重构
+======================================== */
+
+.HyperMD-codeblock-begin {
+  counter-reset: line-numbers;
+}
+
+.HyperMD-codeblock.cm-line:not(.HyperMD-codeblock-begin):not(.HyperMD-codeblock-end) {
+  padding-left: 2.5em !important;
+  position: relative;
+}
+
+.HyperMD-codeblock.cm-line:not(.HyperMD-codeblock-begin):not(.HyperMD-codeblock-end)::after {
+  align-items: flex-start;
+  bottom: -2px;
+  color: var(--text-faint);
+  content: counter(line-numbers);
+  counter-increment: line-numbers;
+  display: flex;
+  font-size: 0.8em;
+  height: 100%;
+  justify-content: flex-end;
+  left: 0;
+  padding-right: 0.5em;
+  position: absolute;
+  text-align: right;
+  white-space: nowrap;
+  width: 2em;
+}
+
+.HyperMD-codeblock.cm-line.cm-active:not(.HyperMD-codeblock-begin):not(.HyperMD-codeblock-end)::after {
+  color: var(--color-accent);
+}
+
+.HyperMD-codeblock .cm-foldPlaceholder::before {
+  display: none;
+}
+
+/*MH?______________________________________-*/
+
+body {
+  --prompt-iselected-background: var(--color-base-10);
+}
+
+.prompt .prompt-results .suggestion-item {
+  opacity: 0.5;
+  transition: line-height 0.1s, opacity 0.1s;
+  transition-timing-function: ease-in-out;
+}
+
+.prompt .prompt-results .suggestion-item:has(+ .is-selected),
+.prompt .prompt-results .suggestion-item:has(+ .is-selected:hover),
+.prompt
+  .prompt-results
+  .suggestion-item.is-selected
+  + .suggestion-item:not(.is-selected),
+.prompt
+  .prompt-results
+  .suggestion-item.is-selected:hover
+  + .suggestion-item:not(.is-selected) {
+  line-height: 155%;
+  opacity: 0.7;
+}
+
+.prompt .prompt-results .suggestion-item.is-selected {
+  background-color: var(--prompt-iselected-background);
+  line-height: 180%;
+  opacity: 1;
+}
+/*阅读模式渐变色分割线*/
+.markdown-preview-view hr {
+	border-top: 1px solid;
+	border-image: linear-gradient(to right, #4a3e5e, #53186b) 2;
+}
+/*实时模式渐变色分割线*/
+.markdown-source-view div.hr.cm-line hr {
+	border-top: 1px solid;
+	border-image: linear-gradient(to right, #4a3e5e, #53186b) 2;
+}
+.status-bar {
+  /* background-color: var(--background-primary); */
+  border-width: 0;
+  opacity: .5;
+  transition: all .2s linear;
+}
+
+.status-bar:hover {
+  opacity: 1;
+  border-width: var(--status-bar-border-width);
+}
+
+/* ===== 通用 Obsidian 组件适配 ===== */
+/* 状态栏 */
+.status-bar {
+    background: var(--background-secondary);
+    border-top: 1px solid var(--interactive-accent);
+}
+
+/* 设置面板 */
+.modal,
+.prompt {
+    background: var(--background-primary);
+    border: 1px solid var(--interactive-accent);
+}
+
+/* 按钮样式 */
+button {
+    background: var(--background-secondary);
+    border: 1px solid var(--interactive-accent);
+    color: var(--text-normal);
+    transition: all 0.2s ease;
+}
+
+button:hover {
+    background: var(--background-modifier-hover);
+}
+
+/* 输入框样式 */
+input, textarea {
+    background: var(--background-secondary);
+    border: 1px solid var(--interactive-accent);
+    color: var(--text-normal);
+}
+
+/* ===== 工作区整体 ===== */
+.workspace {
+    background: transparent;
+}
+
+.workspace-split.mod-root {
+    background: transparent;
+}
+
+/* ===== 响应式优化 ===== */
+@media (max-width: 768px) {
+    .nav-folder-title,
+    .nav-file-title {
+        padding-left: 24px !important;
+    }
+    
+    .workspace-tab-header {
+        padding: 6px 12px;
+    }
+}
+
+/* ===== 打印样式 ===== */
+@media print {
+    .theme-dark-gothic,
+    .theme-victorian-gothic {
+        --background-primary: #FFFFFF;
+        --text-normal: #000000;
+    }
+}
+
+/* ===== 使用正确的字体名称 ===== */
+.nav-folder-title,
+.nav-file-title {
+    font-family: "Durwent","";
+}
+
+/* 暗黑哥特活动标签特效 */
+.theme-dark-gothic .workspace-tab-header.is-active {
+    background: linear-gradient(135deg, 
+        rgba(139, 0, 0, 0.15), 
+        rgba(75, 0, 130, 0.1));
+}
+
+/* 维多利亚哥特活动标签特效 */
+.theme-victorian-gothic .workspace-tab-header.is-active {
+    background: linear-gradient(to bottom, 
+        rgba(255,255,255,0.8) 0%,
+        rgba(240,240,224,0.6) 100%);
+    box-shadow: 
+        inset 0 1px 0 rgba(255,255,255,0.8),
+        0 -2px 3px rgba(192, 192, 192, 0.2);
+}
+
+/* 工具栏图标按钮 */
+.clickable-icon {
+    border-radius: 4px;
+    position: relative;
+    transition: all 0.2s ease;
+}
+
+.clickable-icon:hover {
+    background: var(--background-modifier-hover);
+    transform: scale(1.05);
+}
+
+.theme-dark-gothic .clickable-icon:hover {
+    background: rgba(139, 0, 0, 0.2);
+}
+
+.theme-victorian-gothic .clickable-icon:hover {
+    background: rgba(192, 192, 192, 0.3);
+}
+
+/* ===== 编辑器代码块样式 ===== */
+/* CodeMirror 6 编辑器 */
+.cm-content {
+    background: var(--background-primary);
+    color: var(--text-normal);
+}
+
+.cm-lineNumbers .cm-gutterElement {
+    color: var(--interactive-accent) !important;
+    font-family: 'Fira Code', monospace, monospace;
+    font-size: 0.85em;
+    opacity: 0.7;
+}
+
+.cm-activeLine {
+    background: rgba(75, 0, 130, 0.05) !important;
+}
+
+/* 语法高亮 */
+.cm-keyword { color: var(--gothic-blood) !important; }
+.cm-atom { color: var(--gothic-purple) !important; }
+.cm-number { color: #DAA520 !important; }
+.cm-def { color: #A4A4FF !important; }
+.cm-variable { color: var(--text-normal) !important; }
+.cm-variable-2 { color: #A4A4FF !important; }
+.cm-string { color: #8FBC8F !important; }
+.cm-comment { 
+    color: var(--text-muted) !important;
+    font-style: italic;
+}
+
+/* 预览模式代码块 */
+.markdown-preview-view pre[class*="language-"],
+.markdown-preview-view pre {
+    background: var(--background-secondary);
+    border: 1px solid var(--interactive-accent);
+    border-radius: 6px;
+    padding: 1em;
+    position: relative;
+    overflow: auto;
+}
+
+/* 暗黑哥特代码块渐变 */
+.theme-dark-gothic .markdown-preview-view pre {
+    background: linear-gradient(135deg, 
+        var(--bg-primary-dark) 0%,
+        var(--bg-secondary-dark) 100%);
+    border-color: var(--gothic-purple);
+}
+
+/* 维多利亚哥特代码块 */
+.theme-victorian-gothic .markdown-preview-view pre {
+    background: linear-gradient(135deg, 
+        var(--bg-primary-victorian) 0%,
+        var(--bg-secondary-victorian) 100%);
+    border-color: var(--victorian-border);
+    box-shadow: inset 0 0 10px rgba(192, 192, 192, 0.2);
+}
+
+/* Prism.js 语法高亮 */
+.token.keyword { color: var(--gothic-blood); }
+.token.function { color: #A4A4FF; }
+.token.string { color: #8FBC8F; }
+.token.number { color: #DAA520; }
+.token.comment { 
+    color: var(--text-muted);
+    font-style: italic;
+}
+
+/* ===== 主题变体系统 ===== */
+/* 暗黑哥特主题 */
+.theme-dark-gothic {
+    --background-primary: var(--bg-primary-dark);
+    --background-secondary: var(--bg-secondary-dark);
+    --background-modifier-hover: rgba(139, 0, 0, 0.1);
+    --interactive-accent: var(--accent-primary-dark);
+    --interactive-accent-hover: #A00000;
+    --text-normal: var(--text-normal-dark);
+    --text-muted: #A0A0A0;
+    
+    /* 组件特定变量 */
+    --sidebar-file-icon-color: var(--accent-primary-dark);
+    --sidebar-folder-icon-color: var(--accent-secondary-dark);
+    --tab-active-indicator: linear-gradient(to bottom, var(--gothic-blood), var(--gothic-purple));
+}
+
+/* 维多利亚哥特主题 */
+.theme-victorian-gothic {
+    --background-primary: var(--bg-primary-victorian);
+    --background-secondary: var(--bg-secondary-victorian);
+    --background-modifier-hover: rgba(192, 192, 192, 0.1);
+    --interactive-accent: var(--accent-primary-victorian);
+    --interactive-accent-hover: #A8A8A8;
+    --text-normal: var(--text-normal-victorian);
+    --text-muted: #5A5A5A;
+    --victorian-border: #C4A484;
+    --victorian-metal: var(--gothic-metal);
+    
+    /* 组件特定变量 */
+    --sidebar-file-icon-color: var(--accent-secondary-victorian);
+    --sidebar-folder-icon-color: var(--accent-primary-victorian);
+}
+
+/* ===== 文件树样式系统 ===== */
+/* 文件夹图标 - 暗黑哥特 */
+.theme-dark-gothic .nav-folder-title::before {
+    content: '';
+    height: 16px;
+    left: 6px;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 16px;
+    background-repeat: no-repeat;
+    background-size: contain;
+    filter: drop-shadow(0 0 2px rgba(75, 0, 130, 0.5));
+}
+
+/* 文件图标 - 暗黑哥特 */
+.theme-dark-gothic .nav-file-title::before {
+    content: '';
+    height: 14px;
+    left: 6px;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    transition: all 0.3s ease;
+    width: 14px;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+/* 维多利亚哥特风格图标 */
+.theme-victorian-gothic .nav-folder-title::before {
+    content: '';
+    height: 16px;
+    left: 6px;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 16px;
+    background-repeat: no-repeat;
+    background-size: contain;
+    filter: sepia(0.3) drop-shadow(0 0 1px rgba(192, 192, 192, 0.7));
+}
+
+.theme-victorian-gothic .nav-file-title::before {
+    content: '';
+    height: 14px;
+    left: 6px;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 14px;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+/* Folder Note 插件兼容 */
+.nav-folder-title[data-has-folder-note]::before {
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="%23FFD700" d="M10 4H4c-1.11 0-2 .89-2 2v12c0 1.11.89 2 2 2h16c1.11 0 2-.89-2-2V8c0-1.11-.89-2-2-2h-8l-2-2z"/><circle cx="12" cy="12" r="3" fill="%23FF0000"/></svg>') !important;
+}
+
+/* ===== 3D 折叠动画系统 ===== */
+.nav-folder.is-collapsed .nav-folder-children {
+    max-height: 5000px;
+    opacity: 1;
+    transform: translateX(0);
+}
+
+/* 文件夹标题交互效果 */
+.nav-folder-title:hover {
+    background: linear-gradient(90deg, transparent, var(--background-modifier-hover), transparent);
+    transform: translateX(3px);
+}
+
+/* 折叠指示器动画 */
+.nav-folder-collapse-indicator {
+    opacity: 0.7;
+    transition: transform 0.3s ease;
+}
+
+.nav-folder.is-collapsed .nav-folder-collapse-indicator {
+    transform: rotate(90deg);
+}
+
+/* ===== 标签页工具栏样式 ===== */
+.workspace-tab-header-container {
+    background: var(--background-secondary);
+    border-bottom: 1px solid rgb(59, 31, 124)
+}
+
+.workspace-tab-header {
+    background: transparent;
+    border: none;
+    border-radius: 6px 6px 0 0;
+    margin: 0 1px;
+    padding: 8px 16px;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.workspace-tab-header::before {
+    background: var(--interactive-accent);
+    bottom: 0;
+    content: '';
+    height: 2px;
+    left: 50%;
+    position: absolute;
+    transform: translateX(-50%);
+    transition: width 0.3s ease;
+    width: 0;
+}
+
+.workspace-tab-header.is-active::before {
+    width: 80%;
+}
+
+.workspace-tab-header.is-active {
+    background: var(--background-primary);
+    box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* ===== 滚动条艺术 ===== */
+::-webkit-scrollbar {
+    background: var(--bg-darker);
+    width: 14px;
+}
+
+::-webkit-scrollbar-track {
+    background: 
+        linear-gradient(90deg, var(--bg-light) 0%, var(--bg-dark) 100%);
+    border: 1px solid var(--accent-green);
+    border-radius: 0;
+    box-shadow: inset 0 0 5px rgba(0,0,0,0.8);
+}
+
+::-webkit-scrollbar-thumb {
+    background: 
+        linear-gradient(135deg, var(--accent-green) 0%, var(--accent-purple) 50%, var(--accent-red) 100%);
+    border: 1px solid var(--bg-dark);
+    border-radius: 0;
+    box-shadow: 
+        inset 0 0 5px rgba(255,255,255,0.2),
+        0 0 10px rgba(139, 0, 255, 0.5);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: 
+        linear-gradient(135deg, var(--accent-purple) 0%, var(--accent-red) 50%, var(--accent-green) 100%);
+    box-shadow: 
+        inset 0 0 5px rgba(255,255,255,0.3),
+        0 0 15px rgba(139, 0, 255, 0.8);
+}
+
+::-webkit-scrollbar-corner {
+    background: var(--bg-dark);
+    border: 1px solid var(--accent-green);
+}
+
+/* ===== 文本选择 ===== */
+::selection {
+    background: var(--accent-purple);
+    color: rgb(32, 20, 104);
+    text-shadow: none;
+}
+
+::-moz-selection {
+    background: var(--accent-purple);
+    color: white;
+    text-shadow: none;
+}
+
+/* ===== 水平分割线 ===== */
+hr {
+    background: 
+        linear-gradient(90deg, 
+            transparent, 
+            var(--accent-green), 
+            var(--accent-purple), 
+            var(--accent-red), 
+            transparent);
+    border: none;
+    height: 3px;
+    margin: 40px 0;
+    position: relative;
+}
+
+hr::before {
+    background: linear-gradient(90deg, 
+        transparent 0%,
+        var(--accent-crimson) 20%,
+        var(--mystic-purple) 50%,
+        var(--accent-crimson) 80%,
+        transparent 100%);
+    content: "";
+    height: 1px;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    box-shadow: 0 0 10px rgba(199, 74, 119, 0.5);
+}
+
+hr::after {
+    background: var(--gothic-shadow);
+    color: var(--accent-crimson);
+    content: "❖";
+    font-size: 1.2em;
+    left: 50%;
+    padding: 0 15px;
+    position: absolute;
+    text-shadow: var(--glow-crimson-strong);
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+/* 表头分隔线 */
+thead th:not(:last-child)::after {
+    background: rgba(255, 255, 255, 0.2);
+    bottom: 20%;
+    content: "";
+    pointer-events: none;
+    position: absolute;
+    right: 0;
+    top: 20%;
+    width: 1px;
+}
+
+/* ===== 图片与媒体 ===== */
+img {
+    background: var(--bg-light);
+    border: 2px solid var(--border-medium);
+    box-shadow: var(--shadow-medium);
+    display: block;
+    max-width: 100%;
+}
+
+/* ===== 表格艺术 ===== */
+table::before {
+    background: var(--accent-purple);
+    bottom: -3px;
+    content: "";
+    left: -3px;
+    pointer-events: none;
+    position: absolute;
+    right: -3px;
+    top: -3px;
+    z-index: -1;
+    border: 1px solid var(--accent-purple);
+    opacity: 0.5;
+}
+
+th, td {
+    border: 1px solid var(--border-medium);
+    padding: 3px 5px;
+    position: relative;
+    text-align: left;
+}
+
+th {
+    background: 
+        linear-gradient(to bottom, rgba(78, 154, 6, 0.3), rgba(78, 154, 6, 0.1));
+    border-bottom: 2px solid var(--accent-green);
+    color: var(--text-highlight);
+    font-weight: bold;
+    text-shadow: 0 0 5px rgba(78, 154, 6, 0.5);
+}
+
+tr:nth-child(even) td {
+    background: rgba(50, 50, 55, 0.5);
+}
+
+tr:hover td {
+    background: rgba(139, 0, 255, 0.1);
+}
+
+/* ===== 列表系统 ===== */
+ul, ol {
+    margin: 15px 0;
+    padding-left: 25px;
+}
+
+ul {
+    list-style-type: none;
+}
+
+ul li {
+    margin: 12px 0;
+    padding-left: 25px;
+    position: relative;
+}
+
+ul li::before {
+    color: var(--accent-green);
+    content: "◆";
+    font-size: 0.8em;
+    left: 0;
+    position: absolute;
+    text-shadow: var(--glow-green);
+}
+
+ol {
+    counter-reset: gothic-counter;
+    list-style-type: none;
+}
+
+ol li {
+    margin: 12px 0;
+    padding-left: 30px;
+    position: relative;
+}
+
+ol li::before {
+    background: rgba(139, 0, 255, 0.1);
+    border-radius: 50%;
+    color: var(--accent-purple);
+    content: counter(gothic-counter);
+    display: flex;
+    font-size: 0.8em;
+    font-weight: bold;
+    height: 24px;
+    justify-content: center;
+    left: 0;
+    position: absolute;
+    text-shadow: var(--glow-purple);
+    width: 24px;
+    align-items: center;
+}
+
+ol li {
+    counter-increment: gothic-counter;
+}
+
+/* ===== 代码块与内联代码 ===== */
+code, .cm-inline-code {
+    background: rgba(199, 74, 119, 0.15);
+    border: 1px solid rgba(199, 74, 119, 0.25);
+    border-radius: 4px;
+    color: var(--accent-pink);
+    font-family: "Fira Code", "JetBrains Mono", "Consolas", "Courier New", monospace;
+    font-size: 0.9em;
+    font-weight: 500;
+    padding: 3px 8px;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+pre::before {
+    background: linear-gradient(90deg, var(--accent-green), var(--accent-purple), var(--accent-red));
+    content: "";
+    height: 1px;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+pre code {
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    padding: 0;
+}
+
+/* ===== 引用块 ===== */
+blockquote {
+    background: 
+        linear-gradient(90deg, rgba(139, 0, 255, 0.1) 0%, transparent 100%);
+    border-left: 6px solid var(--accent-purple);
+    border-bottom: 1px solid rgba(139, 0, 255, 0.2);
+    border-right: 1px solid rgba(139, 0, 255, 0.1);
+    border-top: 1px solid rgba(139, 0, 255, 0.2);
+    font-style: italic;
+    margin: 25px 0;
+    padding: 20px 25px;
+    position: relative;
+    box-shadow: var(--shadow-light);
+}
+
+blockquote::before {
+    color: var(--accent-purple);
+    content: "“";
+    font-size: 3em;
+    left: 10px;
+    line-height: 1;
+    opacity: 0.5;
+    position: absolute;
+    top: 10px;
+}
+
+blockquote::after {
+    bottom: -20px;
+    color: var(--accent-purple);
+    content: "”";
+    font-size: 3em;
+    line-height: 1;
+    opacity: 0.5;
+    position: absolute;
+    right: 10px;
+}
+
+/* ===== 基础样式 ===== */
+body {
+    background: 
+        radial-gradient(circle at 10% 20%, rgba(139, 0, 255, 0.05) 0%, transparent 25%),
+        radial-gradient(circle at 90% 80%, rgba(78, 154, 6, 0.05) 0%, transparent 25%),
+        linear-gradient(135deg, var(--bg-darker) 0%, var(--bg-dark) 100%);
+    color: var(--text-primary);
+    font-family: 'Times New Roman', 'Georgia', 'Garamond', serif;
+    font-weight: 500;
+    letter-spacing: 0.3px;
+    line-height: 1.6;
+}
+
+.theme-dark {
+    --background-primary: var(--bg-dark);
+    --background-secondary: var(--bg-light);
+    --background-primary-alt: var(--bg-darker);
+    --background-secondary-alt: var(--bg-lighter);
+}
+
+/* =============================================================================
+   4. Albus 标签页动画系统 (Tab Animations)
+   保留原代码中的 Safari 风格切换与淡入淡出
+   ============================================================================= */
+
+/* 淡入动画关键帧 */
+@keyframes slide-up {
+    0% { opacity: 0; transform: translateY(0%); }
+    15% { opacity: 0; transform: translateY(0.1rem); }
+    25% { transform: translateY(0.15rem); }
+    45% { opacity: 0.5; }
+    65% { opacity: 0.7; }
+    100% { opacity: 1; transform: translateY(0%); }
+}
+
+/* 应用动画 */
+.workspace-split .workspace-tabs:not(.mod-stacked) .view-content,
+.workspace-leaf-content:not(:has(.view-content)) {
+    animation: slide-up var(--animation) forwards;
+}
+
+/* Safari 风格标签栏布局 (当启用 anp-alternate-tab-toggle 类时) */
+.anp-alternate-tab-toggle .workspace-tabs:not(.mod-stacked) .workspace-tab-header {
+    background: var(--background-secondary);
+    border: 1px solid transparent;
+    border-radius: 6px;
+    height: 32px;
+    margin: 0 2px;
+    transition: all 0.3s ease;
+}
+
+/* 激活标签样式 */
+.anp-alternate-tab-toggle .workspace-tab-header.is-active {
+    background: var(--background-primary);
+    border-top: 2px solid var(--g-blood); /* 融入哥特红 */
+    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    flex-grow: 1.5;
+}
+
+.anp-alternate-tab-toggle .workspace-tab-header.is-active .workspace-tab-header-inner-title {
+    color: var(--g-blood);
+    font-weight: bold;
+}
+
+/*------------------Color Palette-------------------*/
+.theme-dark {
+    --gothique-bg-primary: #0d0d0d;
+    --gothique-bg-secondary: #1a1a1a;
+    --gothique-bg-tertiary: #262626;
+    --gothique-bg-accent: #2d1b1b;
+    
+    --gothique-text-primary: #e6e6e6;
+    --gothique-text-secondary: #b3b3b3;
+    --gothique-text-muted: #808080;
+    
+    --gothique-accent: #8b0000;
+    --gothique-accent-light: #a52a2a;
+    --gothique-accent-dark: #660000;
+    
+    --gothique-highlight: #4a0e0e;
+    --gothique-border: #3d3d3d;
+    --gothique-border-light: #4d4d4d;
+    
+    --gothique-purple: #5d1a5d;
+    --gothique-gold: #b8860b;
+    --gothique-silver: #c0c0c0;
+}
+
+.theme-light {
+    --gothique-bg-primary: #f0f0f0;
+    --gothique-bg-secondary: #e0e0e0;
+    --gothique-bg-tertiary: #d0d0d0;
+    --gothique-bg-accent: #e8dada;
+    
+    --gothique-text-primary: #1a1a1a;
+    --gothique-text-secondary: #4d4d4d;
+    --gothique-text-muted: #808080;
+    
+    --gothique-accent: #8b0000;
+    --gothique-accent-light: #a52a2a;
+    --gothique-accent-dark: #660000;
+    
+    --gothique-highlight: #f5e6e6;
+    --gothique-border: #b3b3b3;
+    --gothique-border-light: #c6c6c6;
+    
+    --gothique-purple: #8b4789;
+    --gothique-gold: #8b7500;
+    --gothique-silver: #696969;
+}
+
+/*------------------Typography-------------------*/
+.cm-header-1,
+.markdown-preview-view h1 {
+    border-bottom: 2px solid var(--gothique-accent);
+    font-family: "UnifrakturMaguntia", "Blackletter", cursive;
+    font-size: 2.5em;
+    font-weight: normal;
+    margin-bottom: 0.8em;
+    padding-bottom: 0.3em;
+}
+
+.cm-header-2,
+.markdown-preview-view h2 {
+    border-bottom: 1px solid var(--gothique-purple);
+    font-family: "UnifrakturMaguntia", "Blackletter", cursive;
+    font-size: 2em;
+    font-weight: normal;
+    margin-bottom: 0.8em;
+    padding-bottom: 0.3em;
+}
+
+.cm-header-3,
+.markdown-preview-view h3 {
+    color: var(--gothique-gold);
+    font-family: "UnifrakturMaguntia", "Blackletter", cursive;
+    font-size: 1.5em;
+    font-weight: normal;
+}
+
+.cm-header-4,
+.cm-header-5,
+.cm-header-6,
+.markdown-preview-view h4,
+.markdown-preview-view h5,
+.markdown-preview-view h6 {
+    font-family: var(--font-family-editor);
+    font-weight: bold;
+}
+
+/*------------------UI Elements-------------------*/
+.workspace-tabs .workspace-tab-header,
+.workspace-leaf-content .view-header {
+    background-color: var(--gothique-bg-secondary);
+    border-bottom: 1px solid var(--gothique-border);
+}
+
+.side-dock-ribbon,
+.side-dock-settings {
+    background-color: var(--gothique-bg-secondary);
+    border-right: 1px solid var(--gothique-border);
+}
+
+.nav-file-title,
+.nav-folder-title {
+    border-radius: 0;
+    margin: 1px 0;
+    padding: 4px 10px;
+}
+
+/*------------------Graph View-------------------*/
+.graph-view {
+    --background: var(--gothique-bg-primary);
+    --line-color: var(--gothique-border);
+    --node-attachment-color: var(--gothique-gold);
+    --node-border: var(--gothique-border);
+    --node-color: var(--gothique-bg-tertiary);
+    --node-focused-color: var(--gothique-accent);
+    --node-tag-color: var(--gothique-purple);
+    --text-color: var(--gothique-text-primary);
+}
+
+/*------------------Kanban-------------------*/
+.kanban-plugin {
+    --card-background: var(--gothique-bg-tertiary);
+    --card-border-color: var(--gothique-border);
+    --card-border-width: 1px;
+    --card-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    --lane-background: var(--gothique-bg-secondary);
+    --lane-border-color: var(--gothique-border);
+}
+
+/* ===== 魔幻哥特风格增强补丁 ===== */
+
+/* ===== 深度哥特调色板扩展 ===== */
+
+/* ===== 魔幻主题 ===== */
+.theme-dark {
+    --background-primary: var(--magic-black);
+    --background-secondary: var(--magic-shadow);
+    --background-tertiary: var(--witch-trial-ash);
+    --interactive-accent: var(--witch-trial-red);
+    --interactive-accent-hover: var(--magic-pink);
+    --text-faint: #888888;
+    --text-muted: var(--witch-trial-silver);
+    --text-normal: var(--witch-trial-ivory);
+}
+
+/* ===== 哥特UI元素增强 ===== */
+
+/* 标签页魔幻风格 */
+.workspace-tab-header {
+    background: linear-gradient(135deg, 
+        rgba(139, 0, 0, 0.1) 0%, 
+        rgba(75, 0, 130, 0.1) 100%);
+    border: 1px solid transparent;
+    border-image: var(--gradient-witch-trial) 1;
+    border-radius: 6px 6px 0 0;
+    overflow: hidden;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.workspace-tab-header::before {
+    background: var(--gradient-magic-aura);
+    content: '';
+    height: 2px;
+    left: -100%;
+    position: absolute;
+    top: 0;
+    transition: left 0.5s ease;
+    width: 100%;
+}
+
+.workspace-tab-header:hover::before {
+    left: 0;
+}
+
+.workspace-tab-header.is-active {
+    background: linear-gradient(135deg, 
+        rgba(139, 0, 0, 0.3) 0%, 
+        rgba(75, 0, 130, 0.2) 100%);
+    border-image: var(--gradient-magic-aura) 1;
+    box-shadow: 
+        0 0 15px rgba(139, 0, 0, 0.3),
+        inset 0 0 10px rgba(139, 0, 0, 0.2);
+}
+
+/* 侧边栏魔幻风格 */
+.side-dock-ribbon {
+    background: linear-gradient(180deg, 
+        var(--magic-black) 0%, 
+        var(--magic-shadow) 100%);
+    border-right: 2px solid;
+    border-image: var(--gradient-witch-trial) 1;
+}
+
+.nav-folder-title::before, .nav-file-title::before {
+    background: linear-gradient(90deg, 
+        transparent, 
+        rgba(139, 0, 0, 0.1), 
+        transparent);
+    content: '';
+    height: 100%;
+    left: -100%;
+    position: absolute;
+    top: 0;
+    transition: left 0.5s ease;
+    width: 100%;
+}
+
+.nav-folder-title:hover, .nav-file-title:hover {
+    background: linear-gradient(90deg, 
+        rgba(139, 0, 0, 0.1) 0%, 
+        rgba(75, 0, 130, 0.1) 100%);
+    border-color: var(--witch-trial-red);
+    transform: translateX(3px);
+}
+
+/* 文件树魔幻风格 */
+.nav-folder-children {
+    border-left: 1px solid;
+    border-image: var(--gradient-witch-trial) 1;
+    padding-left: 5px;
+}
+
+/* 滚动条魔幻风格 */
+::-webkit-scrollbar {
+    width: 12px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--magic-black);
+    border: 1px solid;
+    border-image: var(--gradient-witch-trial) 1;
+}
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, 
+        var(--witch-trial-red) 0%, 
+        var(--witch-trial-purple) 100%);
+    border: 1px solid var(--witch-trial-ivory);
+    border-radius: 6px;
+    box-shadow: 0 0 5px rgba(139, 0, 0, 0.5);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg, 
+        var(--magic-pink) 0%, 
+        var(--magic-purple) 100%);
+    box-shadow: 0 0 10px rgba(221, 160, 221, 0.7);
+}
+
+/* 设置面板魔幻风格 */
+.modal, .prompt {
+    background: linear-gradient(135deg, 
+        var(--magic-black) 0%, 
+        var(--magic-shadow) 100%);
+    border: 2px solid;
+    border-image: var(--gradient-magic-aura) 1;
+    box-shadow: 
+        0 0 20px rgba(139, 0, 0, 0.5),
+        inset 0 0 10px rgba(75, 0, 130, 0.3);
+}
+
+/* 按钮魔幻风格 */
+button, .clickable-icon {
+    background: linear-gradient(135deg, 
+        var(--witch-trial-red) 0%, 
+        var(--witch-trial-purple) 100%);
+    border: 1px solid;
+    border-image: var(--gradient-magic-aura) 1;
+    color: var(--witch-trial-ivory);
+    overflow: hidden;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+button:hover, .clickable-icon:hover {
+    background: linear-gradient(135deg, 
+        var(--magic-pink) 0%, 
+        var(--magic-purple) 100%);
+    box-shadow: 0 5px 15px rgba(139, 0, 0, 0.4);
+    transform: translateY(-2px);
+}
+
+button:hover::before, .clickable-icon:hover::before {
+    transform: rotate(45deg) translate(20px, 20px);
+}
+
+/* 列表魔幻风格 */
+ul li::before {
+    color: var(--magic-pink);
+    content: "✦";
+    text-shadow: 0 0 5px var(--magic-pink);
+}
+
+ol {
+    counter-reset: witch-counter;
+}
+
+ol li {
+    counter-increment: witch-counter;
+}
+
+ol li::before {
+    background: rgba(139, 0, 0, 0.2);
+    border: 1px solid var(--witch-trial-red);
+    color: var(--witch-trial-red);
+    content: counter(witch-counter);
+}
+
+/* 分割线魔幻风格 */
+hr {
+    background: var(--gradient-magic-aura);
+    border: none;
+    height: 2px;
+    margin: 20px 0;
+    position: relative;
+}
+
+hr::before {
+    background: var(--magic-black);
+    color: var(--magic-pink);
+    content: "✦";
+    font-size: 1.2em;
+    left: 50%;
+    padding: 0 10px;
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+}
+
+/* 选中文本魔幻风格 */
+::selection {
+    background: var(--gradient-magic-aura);
+    color: var(--witch-trial-ivory);
+    text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+}
+
+/* 高亮文本魔幻风格 */
+.markdown-preview-view mark {
+    background: linear-gradient(135deg, 
+        var(--witch-trial-red) 0%, 
+        var(--magic-pink) 100%);
+    border-radius: 3px;
+    color: var(--witch-trial-ivory);
+    padding: 2px 4px;
+}
+
+/* 搜索高亮魔幻风格 */
+.markdown-preview-view .search-highlight {
+    background: rgba(139, 0, 0, 0.3);
+    border: 1px solid var(--witch-trial-red);
+    border-radius: 2px;
+}
+
+/* 搜索结果当前项魔幻风格 */
+.markdown-preview-view .search-highlight-active {
+    background: rgba(221, 160, 221, 0.4);
+    border: 1px solid var(--magic-pink);
+    border-radius: 2px;
+}
+
+/* 标题魔幻风格 */
+.cm-header-1, .markdown-preview-view h1 {
+    background: linear-gradient(135deg, 
+        var(--witch-trial-red) 0%, 
+        var(--witch-trial-purple) 100%);
+    background-clip: text;
+    border-bottom: 2px solid var(--witch-trial-red);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.cm-header-2, .markdown-preview-view h2 {
+    background: linear-gradient(135deg, 
+        var(--magic-pink) 0%, 
+        var(--magic-purple) 100%);
+    background-clip: text;
+    border-bottom: 1px solid var(--magic-pink);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.cm-header-3, .markdown-preview-view h3 {
+    color: var(--magic-pink);
+    text-shadow: 0 0 5px rgba(221, 160, 221, 0.5);
+}
+
+/* 内联代码魔幻风格 */
+code, .cm-inline-code {
+    background: linear-gradient(135deg, 
+        rgba(139, 0, 0, 0.1) 0%, 
+        rgba(75, 0, 130, 0.1) 100%);
+    border: 1px solid;
+    border-image: var(--gradient-witch-trial) 1;
+    color: var(--magic-pink);
+}
+
+.theme-dark .markdown-source-view .cm-editor .cm-activeLine {
+    background: rgba(139, 0, 0, 0.1) !important;
+}
+
+.theme-dark .markdown-source-view .cm-editor .cm-cursor {
+    border-color: var(--magic-pink);
+}
+
+/* 魔幻主题的内部链接 */
+.internal-link {
+    color: var(--magic-pink);
+    position: relative;
+    text-decoration: none;
+}
+
+.internal-link::after {
+    background: var(--magic-pink);
+    bottom: 0;
+    content: '';
+    height: 1px;
+    left: 0;
+    position: absolute;
+    transition: width 0.3s ease;
+    width: 0;
+}
+
+.internal-link:hover::after {
+    width: 100%;
+}
+
+/* 魔幻主题的外部链接 */
+.external-link {
+    color: var(--magic-purple);
+    position: relative;
+    text-decoration: none;
+}
+
+.external-link::after {
+    background: var(--magic-purple);
+    bottom: 0;
+    content: '';
+    height: 1px;
+    left: 0;
+    position: absolute;
+    transition: width 0.3s ease;
+    width: 0;
+}
+
+.external-link:hover::after {
+    width: 100%;
+}
+
+/* 魔幻主题的折叠指示器 */
+.nav-folder-collapse-indicator {
+    transition: all 0.3s ease;
+}
+
+.nav-folder-collapse-indicator:hover {
+    color: var(--magic-pink) !important;
+    transform: scale(1.1);
+}
+
+/* 魔幻主题的弹窗 */
+.suggestion-container {
+    background: linear-gradient(135deg, 
+        var(--magic-black) 0%, 
+        var(--magic-shadow) 100%);
+    border: 1px solid;
+    border-image: var(--gradient-magic-aura) 1;
+    box-shadow: 
+        0 0 20px rgba(139, 0, 0, 0.5),
+        inset 0 0 10px rgba(75, 0, 130, 0.3);
+}
+
+.suggestion-item {
+    transition: all 0.2s ease;
+}
+
+.suggestion-item:hover {
+    background: linear-gradient(90deg, 
+        rgba(139, 0, 0, 0.2) 0%, 
+        rgba(75, 0, 130, 0.2) 100%);
+}
+
+/* 魔幻主题的提示文本 */
+.prompt-instructions {
+    color: var(--witch-trial-silver);
+}
+
+/* 魔幻主题的进度条 */
+.progress-bar {
+    background: linear-gradient(90deg, 
+        var(--witch-trial-red) 0%, 
+        var(--magic-pink) 100%);
+}
+
+/* 魔幻主题的分割器 */
+.workspace-split.mod-root .workspace-leaf-resize-handle {
+    background: var(--gradient-witch-trial);
+}
+
+/* 魔幻主题的模态框标题 */
+.modal-title {
+    background: linear-gradient(135deg, 
+        var(--witch-trial-red) 0%, 
+        var(--witch-trial-purple) 100%);
+    background-clip: text;
+    padding: 10px 15px;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    border-bottom: 1px solid var(--witch-trial-red);
+}
+
+/* 魔幻主题的标签页指示器 */
+.workspace-tab-header.is-active .workspace-tab-header-inner::after {
+    background: var(--gradient-magic-aura);
+}
+
+/* 魔幻主题的活动状态指示器 */
+.workspace-leaf.mod-active .view-header {
+    background: linear-gradient(135deg, 
+        rgba(139, 0, 0, 0.2) 0%, 
+        rgba(75, 0, 130, 0.2) 100%);
+    border-bottom: 2px solid;
+    border-image: var(--gradient-magic-aura) 1;
+}
+
+/* 魔幻主题的折叠标题 */
+.nav-folder-title.has-unread::after {
+    background: var(--magic-pink);
+    box-shadow: 0 0 8px var(--magic-pink);
+}
+
+/* 魔幻主题的文件标题 */
+.nav-file-title.has-unread::after {
+    background: var(--witch-trial-red);
+    box-shadow: 0 0 8px var(--witch-trial-red);
+}
+
+/* 魔幻主题的特殊动画 */
+@keyframes witchTrialGlow {
+    0% { box-shadow: 0 0 5px var(--witch-trial-red); }
+    50% { box-shadow: 0 0 15px var(--magic-pink); }
+    100% { box-shadow: 0 0 5px var(--witch-trial-red); }
+}
+
+.theme-dark .workspace-tab-header.is-active {
+    animation: witchTrialGlow 3s infinite;
+}
+
+/* 魔幻主题的特殊字体效果 */
+.cm-header-1, .cm-header-2, .cm-header-3,
+.markdown-preview-view h1, .markdown-preview-view h2, .markdown-preview-view h3 {
+    font-family: 'UnifrakturMaguntia', 'Blackletter', cursive, serif !important;
+    text-shadow: 0 0 10px rgba(139, 0, 0, 0.3);
+}
+
+/* 魔幻主题的特殊按钮效果 */
+button.mod-warning {
+    background: linear-gradient(135deg, 
+        var(--witch-trial-red) 0%, 
+        #b22222 100%);
+}
+
+button.mod-warning:hover {
+    background: linear-gradient(135deg, 
+        #ff6347 0%, 
+        var(--witch-trial-red) 100%);
+}
+
+/* 魔幻主题的特殊输入框效果 */
+input[type="range"] {
+    background: var(--gradient-witch-trial);
+}
+
+input[type="range"]::-webkit-slider-thumb {
+    background: var(--magic-pink);
+    box-shadow: 0 0 5px var(--magic-pink);
+}
+
+/* 魔幻主题的特殊复选框效果 */
+input[type="checkbox"] {
+    border: 1px solid var(--witch-trial-red);
+}
+
+input[type="checkbox"]:checked {
+    background: var(--gradient-magic-aura);
+    border-color: var(--magic-pink);
+}
+
+/* 魔幻主题的特殊下拉菜单效果 */
+select {
+    background: linear-gradient(135deg, 
+        var(--magic-black) 0%, 
+        var(--magic-shadow) 100%);
+    border: 1px solid;
+    border-image: var(--gradient-witch-trial) 1;
+    color: var(--witch-trial-ivory);
+}
+
+/* 魔幻主题的特殊滚动条效果 */
+::-webkit-scrollbar-corner {
+    background: var(--magic-black);
+    border: 1px solid;
+    border-image: var(--gradient-witch-trial) 1;
+}
+
+/* 魔幻主题的特殊文本效果 */
+.cm-em, .markdown-preview-view em {
+    color: var(--magic-pink);
+    text-shadow: 0 0 5px rgba(221, 160, 221, 0.3);
+}
+
+.cm-strong, .markdown-preview-view strong {
+    color: var(--witch-trial-red);
+    text-shadow: 0 0 5px rgba(139, 0, 0, 0.3);
+}
+
+/* 魔幻主题的特殊链接效果 */
+.cm-link, .markdown-preview-view a {
+    color: var(--magic-purple);
+    position: relative;
+    text-decoration: none;
+}
+
+.cm-link:hover, .markdown-preview-view a:hover {
+    color: var(--magic-pink);
+    text-shadow: 0 0 8px var(--magic-pink);
+}
+
+/* 魔幻主题的特殊代码高亮 */
+.cm-s-obsidian span.cm-comment {
+    color: #888888 !important;
+    font-style: italic;
+}
+
+.cm-s-obsidian span.cm-keyword {
+    color: var(--witch-trial-red) !important;
+}
+
+.cm-s-obsidian span.cm-def {
+    color: var(--magic-pink) !important;
+}
+
+.cm-s-obsidian span.cm-string {
+    color: var(--magic-purple) !important;
+}
+
+.cm-s-obsidian span.cm-number {
+    color: var(--witch-trial-gold) !important;
+}
+
+/* 魔幻主题的特殊滑块效果 */
+.slider {
+    background: var(--gradient-witch-trial);
+}
+
+.slider::-webkit-slider-thumb {
+    background: var(--magic-pink);
+    box-shadow: 0 0 5px var(--magic-pink);
+}
+
+/* 魔幻主题的特殊进度条效果 */
+.progress-bar {
+    background: var(--gradient-magic-aura);
+}
+
+.progress-bar::-webkit-progress-bar {
+    background: var(--magic-shadow);
+}
+
+/* 魔幻主题的特殊状态栏效果 */
+.theme-dark .status-bar {
+    background: linear-gradient(90deg, 
+        var(--magic-black) 0%, 
+        var(--witch-trial-dark) 100%);
+    border-top: 2px solid;
+    border-image: var(--gradient-magic-aura) 1;
+}
+
+/* 魔幻主题的特殊弹窗背景 */
+.theme-dark .modal-bg {
+    background: radial-gradient(circle, 
+        rgba(139, 0, 0, 0.3) 0%, 
+        rgba(75, 0, 130, 0.2) 50%, 
+        rgba(0, 0, 0, 0.8) 100%);
+}
+
+/* 魔幻主题的特殊提示背景 */
+.theme-dark .suggestion-container {
+    background: linear-gradient(135deg, 
+        var(--magic-black) 0%, 
+        var(--magic-shadow) 100%);
+    backdrop-filter: blur(5px);
+}
+
+/* 魔幻主题的特殊分割线效果 */
+.markdown-preview-view hr, .markdown-source-view div.hr.cm-line hr {
+    border-image: var(--gradient-magic-aura) 1;
+    position: relative;
+}
+
+.markdown-preview-view hr::after, .markdown-source-view div.hr.cm-line hr::after {
+    background: var(--magic-black);
+    color: var(--magic-pink);
+    content: "✦";
+    font-size: 1.2em;
+    left: 50%;
+    padding: 0 10px;
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+}
+
+/* 魔幻主题的特殊图标效果 */
+.nav-action-button, .clickable-icon {
+    transition: all 0.3s ease;
+}
+
+.nav-action-button:hover, .clickable-icon:hover {
+    background: rgba(139, 0, 0, 0.2) !important;
+    box-shadow: 0 0 10px rgba(221, 160, 221, 0.3);
+    color: var(--magic-pink) !important;
+    transform: scale(1.1);
+}
+
+/* 魔幻主题的特殊折叠效果 */
+.nav-folder.is-collapsed .nav-folder-children {
+    opacity: 0.7;
+    transform: translateX(-5px);
+}
+
+.nav-folder:not(.is-collapsed) .nav-folder-children {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+/* 魔幻主题的特殊列表标记 */
+ul li::marker {
+    color: var(--magic-pink);
+}
+
+ol li::marker {
+    color: var(--witch-trial-red);
+}
+
+/* 魔幻主题的特殊代码行号 */
+.cm-lineNumbers .cm-gutterElement {
+    color: var(--magic-purple) !important;
+    text-shadow: 0 0 5px rgba(221, 160, 221, 0.3);
+}
+
+/* 魔幻主题的特殊活动行 */
+.cm-activeLine {
+    background: rgba(139, 0, 0, 0.1) !important;
+}
+
+/* 魔幻主题的特殊搜索结果 */
+.markdown-preview-view .search-result-file-matched {
+    background: rgba(139, 0, 0, 0.2);
+    border: 1px solid var(--witch-trial-red);
+    border-radius: 3px;
+    padding: 1px 2px;
+}
+
+/* 魔幻主题的特殊大纲效果 */
+.outline .pane-list-item {
+    border-left: 2px solid transparent;
+}
+
+.outline .pane-list-item:hover {
+    background: rgba(139, 0, 0, 0.1);
+    border-left: 2px solid var(--magic-pink);
+}
+
+/* 魔幻主题的特殊大纲活动项 */
+.outline .pane-list-item.is-selected {
+    background: rgba(139, 0, 0, 0.2);
+    border-left: 2px solid var(--witch-trial-red);
+}
+
+/* 魔幻主题的特殊标签页容器 */
+.workspace-tab-header-container {
+    background: linear-gradient(135deg, 
+        var(--magic-black) 0%, 
+        var(--magic-shadow) 100%);
+    border-bottom: 2px solid;
+    border-image: var(--gradient-witch-trial) 1;
+}
+
+/* 魔幻主题的特殊标签页分隔符 */
+.workspace-tab-header-container .workspace-tab-header-spacer {
+    display: none;
+}
+
+/* 魔幻主题的特殊标签页新标签按钮 */
+.workspace-tab-header-new-tab {
+    color: var(--magic-pink);
+    transition: all 0.3s ease;
+}
+
+.workspace-tab-header-new-tab:hover {
+    color: var(--witch-trial-red);
+    text-shadow: 0 0 8px var(--magic-pink);
+    transform: scale(1.1);
+}
+
+/* 魔幻主题的特殊标签页关闭按钮 */
+.workspace-tab-header-inner-close-button {
+    color: var(--witch-trial-silver);
+    transition: all 0.3s ease;
+}
+
+.workspace-tab-header-inner-close-button:hover {
+    background: rgba(139, 0, 0, 0.2);
+    border-radius: 3px;
+    color: var(--witch-trial-red) !important;
+}
+
+/* 魔幻主题的特殊标签页图标 */
+.workspace-tab-header-inner-icon {
+    color: var(--magic-purple);
+    transition: all 0.3s ease;
+}
+
+.workspace-tab-header-inner-icon:hover {
+    color: var(--magic-pink) !important;
+}
+
+/* 魔幻主题的特殊标签页标题 */
+.workspace-tab-header-inner-title {
+    transition: all 0.3s ease;
+}
+
+.workspace-tab-header-inner-title:hover {
+    color: var(--magic-pink) !important;
+    text-shadow: 0 0 8px var(--magic-pink);
+}
+
+/* 魔幻主题的特殊标签页活动状态 */
+.workspace-tab-header.is-active .workspace-tab-header-inner-title {
+    color: var(--magic-pink) !important;
+    text-shadow: 0 0 8px var(--magic-pink);
+}
+
+/* 魔幻主题的特殊标签页活动图标 */
+.workspace-tab-header.is-active .workspace-tab-header-inner-icon {
+    color: var(--witch-trial-red) !important;
+    text-shadow: 0 0 8px var(--witch-trial-red);
+}
+
+/* 魔幻主题的特殊标签页活动关闭按钮 */
+.workspace-tab-header.is-active .workspace-tab-header-inner-close-button {
+    color: var(--magic-purple) !important;
+}
+
+.workspace-tab-header.is-active .workspace-tab-header-inner-close-button:hover {
+    background: rgba(139, 0, 0, 0.3);
+    color: var(--witch-trial-red) !important;
+}
+
+/* 魔幻主题的特殊侧边栏标签页 */
+.mod-left-split .workspace-tab-header, .mod-right-split .workspace-tab-header {
+    background: linear-gradient(135deg, 
+        rgba(139, 0, 0, 0.05) 0%, 
+        rgba(75, 0, 130, 0.05) 100%);
+}
+
+.mod-left-split .workspace-tab-header.is-active, .mod-right-split .workspace-tab-header.is-active {
+    background: linear-gradient(135deg, 
+        rgba(139, 0, 0, 0.2) 0%, 
+        rgba(75, 0, 130, 0.1) 100%);
+    border-image: var(--gradient-magic-aura) 1;
+}
+
+/* 魔幻主题的特殊侧边栏活动指示器 */
+.mod-left-split .workspace-tab-header.is-active .workspace-tab-header-inner-icon,
+.mod-right-split .workspace-tab-header.is-active .workspace-tab-header-inner-icon {
+    color: var(--magic-pink) !important;
+}
+
+/* 魔幻主题的特殊侧边栏活动标题 */
+.mod-left-split .workspace-tab-header.is-active .workspace-tab-header-inner-title,
+.mod-right-split .workspace-tab-header.is-active .workspace-tab-header-inner-title {
+    color: var(--magic-pink) !important;
+}
+
+/* 魔幻主题的特殊侧边栏活动关闭按钮 */
+.mod-left-split .workspace-tab-header.is-active .workspace-tab-header-inner-close-button,
+.mod-right-split .workspace-tab-header.is-active .workspace-tab-header-inner-close-button {
+    color: var(--magic-purple) !important;
+}
+
+/* 魔幻主题的特殊侧边栏活动关闭按钮悬停 */
+.mod-left-split .workspace-tab-header.is-active .workspace-tab-header-inner-close-button:hover,
+.mod-right-split .workspace-tab-header.is-active .workspace-tab-header-inner-close-button:hover {
+    background: rgba(139, 0, 0, 0.3);
+    color: var(--witch-trial-red) !important;
+}
+
+/* 魔幻主题的特殊侧边栏设置按钮 */
+.mod-left-split .sidebar-toggle-button.mod-left .clickable-icon,
+.mod-right-split .sidebar-toggle-button.mod-right .clickable-icon {
+    color: var(--magic-purple);
+    transition: all 0.3s ease;
+}
+
+.mod-left-split .sidebar-toggle-button.mod-left .clickable-icon:hover,
+.mod-right-split .sidebar-toggle-button.mod-right .clickable-icon:hover {
+    background: rgba(139, 0, 0, 0.2);
+    color: var(--magic-pink) !important;
+}
+
+/* 魔幻主题的特殊侧边栏活动设置按钮 */
+.workspace.is-left-sidedock-open .sidebar-toggle-button.mod-left .clickable-icon,
+.workspace.is-right-sidedock-open .sidebar-toggle-button.mod-right .clickable-icon {
+    color: var(--witch-trial-red) !important;
+    text-shadow: 0 0 8px var(--witch-trial-red);
+}
+
+/* 魔幻主题的特殊侧边栏活动设置按钮悬停 */
+.workspace.is-left-sidedock-open .sidebar-toggle-button.mod-left .clickable-icon:hover,
+.workspace.is-right-sidedock-open .sidebar-toggle-button.mod-right .clickable-icon:hover {
+    background: rgba(139, 0, 0, 0.3);
+    color: var(--magic-pink) !important;
+}
+
+/* 魔幻主题的特殊活动状态 */
+body.is-focused .mod-active .workspace-tab-header.is-active .workspace-tab-header-inner-icon,
+body.is-focused .mod-active .workspace-tab-header.is-active .workspace-tab-header-inner-title {
+    color: var(--magic-pink) !important;
+    text-shadow: 0 0 8px var(--magic-pink);
+}
+
+/* 魔幻主题的特殊标签页淡入动画 */
+@keyframes witchTrialFadeIn {
+    0% { opacity: 0; transform: translateY(10px); }
+    100% { opacity: 1; transform: translateY(0); }
+}
+
+.workspace-split .workspace-tabs:not(.mod-stacked) .view-content,
+.workspace-leaf-content:not(:has(.view-content)) {
+    animation: witchTrialFadeIn var(--animation) forwards;
+}
+
+/* 魔幻主题的特殊设置面板网格 */
+body:not(.hotkey-layout) .vertical-tabs-container .vertical-tab-content>.hotkey-list-container,
+body:not(.plugin-layout) .vertical-tabs-container .plugin-list-plugins>div:not(.setting-item),
+body:not(.installed-plugin-layout) .vertical-tabs-container .installed-plugins-container {
+    .setting-item:not(:has(~.setting-item-heading)):not(.setting-item-heading) {
+        background: linear-gradient(135deg, 
+            var(--magic-black) 0%, 
+            var(--magic-shadow) 100%);
+        border: 1px solid;
+        border-image: var(--gradient-witch-trial) 1;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(139, 0, 0, 0.2);
+    }
+}
+
+/* 魔幻主题的特殊设置面板按钮 */
+.installed-plugins-container .setting-item.mod-toggle .setting-item-control {
+    .checkbox-container {
+        background: rgba(139, 0, 0, 0.1);
+        border: 1px solid var(--witch-trial-red);
+    }
+    
+    .checkbox-container:after {
+        background: var(--magic-pink);
+    }
+    
+    .checkbox-container.is-enabled {
+        background: var(--gradient-magic-aura);
+        border-color: var(--magic-pink);
+    }
+}
+
+/* 魔幻主题的特殊文档属性球 */
+.doc--ball .metadata-container {
+    background: var(--gradient-magic-aura);
+    box-shadow: 
+        0 0 0 1px var(--witch-trial-red),
+        0 3px 10px rgba(0,0,0,0.3),
+        inset 0 1px 0 rgba(255,255,255,0.2);
+}
+
+.doc--ball .metadata-container:hover,
+.doc--ball .metadata-container:focus-within,
+.doc--ball .metadata-container.is-active {
+    box-shadow: 
+        0 12px 30px rgba(139, 0, 0, 0.4),
+        inset 0 0 16px rgba(221, 160, 221, 0.3),
+        inset 0 0 2px rgba(255, 255, 255, 0.7);
+}
+
+/* 魔幻主题的特殊文档属性内容 */
+.doc--ball .metadata-content {
+    background: linear-gradient(135deg, 
+        var(--magic-black) 0%, 
+        var(--magic-shadow) 100%);
+    border: 1px solid;
+    border-image: var(--gradient-witch-trial) 1;
+}
+
+/* 魔幻主题的特殊文档属性触发器 */
+.doc--ball .metadata-trigger {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+/* 魔幻主题的特殊文档属性触发器悬停 */
+.doc--ball .metadata-container:hover .metadata-trigger,
+.doc--ball .metadata-container:focus-within .metadata-trigger,
+.doc--ball .metadata-container.is-active .metadata-trigger {
+    opacity: 0;
+    transform: scale(1.5) rotate(90deg);
+}
+
+/* 魔幻主题的特殊文档属性展开状态 */
+.doc--ball .metadata-container:hover .metadata-content,
+.doc--ball .metadata-container:focus-within .metadata-content,
+.doc--ball .metadata-container.is-active .metadata-content {
+    box-shadow: 
+        0 10px 20px rgba(0, 0, 0, 0.3),
+        inset 0 0 10px rgba(139, 0, 0, 0.1);
+}
+
+/* 魔幻主题的特殊图片样式 */
+img {
+    border: 1px solid;
+    border-image: var(--gradient-witch-trial) 1;
+    box-shadow: 0 0 10px rgba(139, 0, 0, 0.2);
+    transition: all 0.3s ease;
+}
+
+img:hover {
+    box-shadow: 0 0 20px rgba(221, 160, 221, 0.4);
+    transform: scale(1.02);
+}
+
+/* 魔幻主题的特殊深色模式图片反色 */
+.theme-dark img[alt*="dark"] {
+    filter: invert(1) hue-rotate(180deg) brightness(1.1) contrast(1.1) !important;
+}
+
+/* 魔幻主题的特殊图片位置样式 */
+img[alt$="left"]:not([class*="emoji"]),
+img[alt$="right"]:not([class*="emoji"]),
+img[alt$="centre"]:not([class*="emoji"]),
+img[alt$="center"]:not([class*="emoji"]) {
+    border: 1px solid;
+    border-image: var(--gradient-witch-trial) 1;
+    box-shadow: 0 0 10px rgba(139, 0, 0, 0.2);
+}
+
+/* 魔幻主题的特殊图片网格样式 */
+.img-grid span.image-embed[alt*="."] {
+    border: 1px solid;
+    border-image: var(--gradient-witch-trial) 1;
+}
+
+/* 魔幻主题的特殊图片标题样式 */
+:is(.markdown-preview-view,.markdown-rendered,.markdown-source-view.mod-cm6.is-live-preview) .image-embed::after {
+    color: var(--witch-trial-silver);
+    text-shadow: 0 0 5px rgba(139, 0, 0, 0.3);
+}
+
+/* 魔幻主题的特殊代码块行号样式 */
+.HyperMD-codeblock.cm-line:not(.HyperMD-codeblock-begin):not(.HyperMD-codeblock-end)::after {
+    color: var(--magic-purple);
+    text-shadow: 0 0 5px rgba(221, 160, 221, 0.3);
+}
+
+/* 魔幻主题的特殊活动代码块行号样式 */
+.HyperMD-codeblock.cm-line.cm-active:not(.HyperMD-codeblock-begin):not(.HyperMD-codeblock-end)::after {
+    color: var(--magic-pink);
+    text-shadow: 0 0 8px var(--magic-pink);
+}
+
+/* 魔幻主题的特殊提示结果样式 */
+.prompt .prompt-results .suggestion-item {
+    border-left: 3px solid transparent;
+}
+
+.prompt .prompt-results .suggestion-item.is-selected {
+    background: rgba(139, 0, 0, 0.1);
+    border-image: var(--gradient-magic-aura) 1;
+    border-left: 3px solid;
+}
+
+/* 魔幻主题的特殊提示结果悬停样式 */
+.prompt .prompt-results .suggestion-item:hover {
+    background: rgba(139, 0, 0, 0.15);
+}
+
+/* 魔幻主题的特殊提示结果活动样式 */
+.prompt .prompt-results .suggestion-item:has(+ .is-selected),
+.prompt .prompt-results .suggestion-item.is-selected + .suggestion-item:not(.is-selected) {
+    background: rgba(139, 0, 0, 0.05);
+}
+
+/* 魔幻主题的特殊状态栏悬停样式 */
+.status-bar:hover {
+    box-shadow: inset 0 0 10px rgba(139, 0, 0, 0.3);
+}
+
+/* 魔幻主题的特殊分割线样式 */
+.markdown-preview-view hr, .markdown-source-view div.hr.cm-line hr {
+    border-image: var(--gradient-magic-aura) 1;
+    overflow: hidden;
+    position: relative;
+}
+
+.markdown-preview-view hr::before, .markdown-source-view div.hr.cm-line hr::before {
+    background: linear-gradient(90deg, 
+        transparent 0%,
+        var(--witch-trial-red) 20%,
+        var(--magic-purple) 50%,
+        var(--witch-trial-red) 80%,
+        transparent 100%);
+    content: "";
+    height: 1px;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    box-shadow: 0 0 10px rgba(199, 74, 119, 0.5);
+}
+
+/* 魔幻主题的特殊分割线中心符号 */
+.markdown-preview-view hr::after, .markdown-source-view div.hr.cm-line hr::after {
+    background: var(--magic-black);
+    color: var(--magic-pink);
+    content: "✦";
+    font-size: 1.2em;
+    left: 50%;
+    padding: 0 15px;
+    position: absolute;
+    text-shadow: 0 0 10px var(--magic-pink);
+    top: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+}
+
+/* 魔幻主题的特殊分割线动画 */
+@keyframes witchTrialHrGlow {
+    0% { box-shadow: 0 0 5px var(--witch-trial-red); }
+    50% { box-shadow: 0 0 15px var(--magic-pink); }
+    100% { box-shadow: 0 0 5px var(--witch-trial-red); }
+}
+
+.markdown-preview-view hr, .markdown-source-view div.hr.cm-line hr {
+    animation: witchTrialHrGlow 4s infinite;
+}
+
+/* 魔幻主题的特殊表格头部分隔线 */
+thead th:not(:last-child)::after {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+/* 魔幻主题的特殊表格行悬停效果 */
+tr:hover td {
+    background: rgba(221, 160, 221, 0.1) !important;
+}
+
+/* 魔幻主题的特殊表格奇偶行效果 */
+tr:nth-child(even) td {
+    background: rgba(139, 0, 0, 0.1) !important;
+}
+
+tr:nth-child(odd) td {
+    background: rgba(75, 0, 130, 0.05) !important;
+}
+
+/* 魔幻主题的特殊表格头部效果 */
+th {
+    background: linear-gradient(135deg, 
+        var(--witch-trial-red) 0%, 
+        var(--witch-trial-purple) 100%) !important;
+    border: 1px solid var(--magic-pink) !important;
+    text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+}
+
+/* 魔幻主题的特殊表格边框效果 */
+table::before {
+    border: 1px solid var(--magic-purple);
+    opacity: 0.3;
+}
+
+/* 魔幻主题的特殊列表样式 */
+ul li::before {
+    color: var(--magic-pink);
+    content: "✦";
+    text-shadow: 0 0 8px var(--magic-pink);
+}
+
+ol li::before {
+    background: rgba(139, 0, 0, 0.1);
+    border: 1px solid var(--witch-trial-red);
+    color: var(--witch-trial-red);
+    content: counter(gothic-counter);
+    text-shadow: 0 0 5px var(--witch-trial-red);
+}
+
+/* 魔幻主题的特殊有序列表计数器 */
+ol {
+    counter-reset: gothic-counter;
+}
+
+ol li {
+    counter-increment: gothic-counter;
+}
+
+/* 魔幻主题的特殊代码样式 */
+code, .cm-inline-code {
+    background: linear-gradient(135deg, 
+        rgba(139, 0, 0, 0.15) 0%, 
+        rgba(75, 0, 130, 0.1) 100%);
+    border: 1px solid;
+    border-image: var(--gradient-witch-trial) 1;
+    color: var(--magic-pink);
+    font-family: "Fira Code", "JetBrains Mono", "Consolas", "Courier New", monospace;
+    font-size: 0.9em;
+    padding: 3px 8px;
+    border-radius: 4px;
+    text-shadow: 0 0 5px rgba(221, 160, 221, 0.3);
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+/* 魔幻主题的特殊代码块样式 */
+pre, .markdown-preview-view pre {
+    background: 
+        linear-gradient(135deg, var(--magic-black) 0%, var(--magic-shadow) 100%) !important;
+    border-left: 1px solid;
+    border-image: var(--gradient-magic-aura) 1;
+    overflow: hidden;
+    position: relative;
+}
+
+pre::before {
+    background: var(--gradient-magic-aura);
+}
+
+/* 魔幻主题的特殊代码块内代码样式 */
+pre code {
+    background: transparent !important;
+    border: none !important;
+    border-radius: 0 !important;
+    padding: 0 !important;
+}
+
+/* 魔幻主题的特殊引用块样式 */
+blockquote {
+    background: 
+        linear-gradient(90deg, rgba(139, 0, 255, 0.1) 0%, transparent 100%);
+    border-left: 6px solid;
+    border-image: var(--gradient-magic-aura) 1;
+    overflow: hidden;
+    position: relative;
+}
+
+blockquote::before, blockquote::after {
+    color: var(--magic-pink);
+    text-shadow: 0 0 10px var(--magic-pink);
+}
+
+/* ===== 代码块颜色定制补丁 ===== */
+
+/* ===== 代码块颜色变量定义 ===== */
+
+/* ===== 基础代码块样式 ===== */
+.markdown-preview-view pre,
+.markdown-preview-view pre code,
+.cm-s-obsidian .HyperMD-codeblock,
+.cm-s-obsidian .HyperMD-codeblock-begin,
+.cm-s-obsidian .HyperMD-codeblock-end {
+    background: var(--code-bg-dark) !important;
+    border: 1px solid var(--code-border-primary);
+    border-left: 4px solid var(--code-border-secondary);
+    border-radius: 6px;
+    box-shadow: 
+        0 2px 8px rgba(0, 0, 0, 0.4),
+        inset 0 0 10px rgba(139, 0, 0, 0.1);
+    color: var(--code-text-normal);
+    overflow: hidden;
+    position: relative;
+}
+
+/* ===== 代码块左侧装饰 ===== */
+.markdown-preview-view pre::after,
+.cm-s-obsidian .HyperMD-codeblock::after {
+    background: linear-gradient(180deg, 
+        var(--code-border-primary) 0%, 
+        var(--code-border-secondary) 50%, 
+        var(--code-border-accent) 100%);
+    bottom: 0;
+    content: '';
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 2px;
+    z-index: 2;
+}
+
+/* ===== 代码块内容样式 ===== */
+.markdown-preview-view pre code,
+.cm-s-obsidian .HyperMD-codeblock-code {
+    background: transparent !important;
+    color: var(--code-text-normal);
+    display: block;
+    font-family: 'Fira Code', 'JetBrains Mono', 'Consolas', 'Courier New', monospace !important;
+    font-size: 0.9em;
+    line-height: 1.5;
+    overflow-x: auto;
+    padding: 20px !important;
+}
+
+/* ===== 代码块行号样式 ===== */
+.cm-s-obsidian .HyperMD-codeblock.cm-line:not(.HyperMD-codeblock-begin):not(.HyperMD-codeblock-end)::after {
+    background: rgba(0, 0, 0, 0.3);
+    border-right: 1px solid var(--code-border-primary);
+    color: var(--code-text-comment);
+    padding-right: 8px;
+}
+
+/* ===== 不同语言的代码块背景色 ===== */
+
+/* Python 代码块 */
+.markdown-preview-view pre[class*="language-python"],
+.markdown-preview-view pre:has(code[class*="language-python"]),
+.cm-s-obsidian .HyperMD-codeblock[class*="language-python"] {
+    background: var(--code-python-bg) !important;
+    border-left-color: #3572A5; /* Python 蓝色 */
+}
+
+/* JavaScript 代码块 */
+.markdown-preview-view pre[class*="language-javascript"],
+.markdown-preview-view pre:has(code[class*="language-javascript"]),
+.cm-s-obsidian .HyperMD-codeblock[class*="language-javascript"] {
+    background: var(--code-javascript-bg) !important;
+    border-left-color: #f7df1e; /* JavaScript 黄色 */
+}
+
+.markdown-preview-view pre[class*="language-js"],
+.markdown-preview-view pre:has(code[class*="language-js"]),
+.cm-s-obsidian .HyperMD-codeblock[class*="language-js"] {
+    background: var(--code-javascript-bg) !important;
+    border-left-color: #f7df1e;
+}
+
+/* TypeScript 代码块 */
+.markdown-preview-view pre[class*="language-typescript"],
+.markdown-preview-view pre:has(code[class*="language-typescript"]),
+.cm-s-obsidian .HyperMD-codeblock[class*="language-typescript"] {
+    background: var(--code-javascript-bg) !important;
+    border-left-color: #3178c6; /* TypeScript 蓝色 */
+}
+
+.markdown-preview-view pre[class*="language-ts"],
+.markdown-preview-view pre:has(code[class*="language-ts"]),
+.cm-s-obsidian .HyperMD-codeblock[class*="language-ts"] {
+    background: var(--code-javascript-bg) !important;
+    border-left-color: #3178c6;
+}
+
+/* HTML 代码块 */
+.markdown-preview-view pre[class*="language-html"],
+.markdown-preview-view pre:has(code[class*="language-html"]),
+.cm-s-obsidian .HyperMD-codeblock[class*="language-html"] {
+    background: var(--code-html-bg) !important;
+    border-left-color: #e34c26; /* HTML 橙色 */
+}
+
+/* CSS 代码块 */
+.markdown-preview-view pre[class*="language-css"],
+.markdown-preview-view pre:has(code[class*="language-css"]),
+.cm-s-obsidian .HyperMD-codeblock[class*="language-css"] {
+    background: var(--code-css-bg) !important;
+    border-left-color: #264de4; /* CSS 蓝色 */
+}
+
+/* JSON 代码块 */
+.markdown-preview-view pre[class*="language-json"],
+.markdown-preview-view pre:has(code[class*="language-json"]),
+.cm-s-obsidian .HyperMD-codeblock[class*="language-json"] {
+    background: var(--code-json-bg) !important;
+    border-left-color: #0000cc; /* JSON 蓝色 */
+}
+
+/* YAML 代码块 */
+.markdown-preview-view pre[class*="language-yaml"],
+.markdown-preview-view pre:has(code[class*="language-yaml"]),
+.cm-s-obsidian .HyperMD-codeblock[class*="language-yaml"] {
+    background: var(--code-yaml-bg) !important;
+    border-left-color: #cb171e; /* YAML 红色 */
+}
+
+/* Markdown 代码块 */
+.markdown-preview-view pre[class*="language-markdown"],
+.markdown-preview-view pre:has(code[class*="language-markdown"]),
+.cm-s-obsidian .HyperMD-codeblock[class*="language-markdown"] {
+    background: var(--code-markdown-bg) !important;
+    border-left-color: #083fa1; /* Markdown 蓝色 */
+}
+
+/* SQL 代码块 */
+.markdown-preview-view pre[class*="language-sql"],
+.markdown-preview-view pre:has(code[class*="language-sql"]),
+.cm-s-obsidian .HyperMD-codeblock[class*="language-sql"] {
+    background: var(--code-sql-bg) !important;
+    border-left-color: #e6835f; /* SQL 橙色 */
+}
+
+/* Bash/Shell 代码块 */
+.markdown-preview-view pre[class*="language-bash"],
+.markdown-preview-view pre:has(code[class*="language-bash"]),
+.markdown-preview-view pre[class*="language-shell"],
+.markdown-preview-view pre:has(code[class*="language-shell"]),
+.cm-s-obsidian .HyperMD-codeblock[class*="language-bash"],
+.cm-s-obsidian .HyperMD-codeblock[class*="language-shell"] {
+    background: var(--code-bash-bg) !important;
+    border-left-color: #4eaa25; /* Bash 绿色 */
+}
+
+/* C++ 代码块 */
+.markdown-preview-view pre[class*="language-cpp"],
+.markdown-preview-view pre:has(code[class*="language-cpp"]),
+.cm-s-obsidian .HyperMD-codeblock[class*="language-cpp"] {
+    background: #2b2b2b !important;
+    border-left-color: #00599c; /* C++ 蓝色 */
+}
+
+/* Java 代码块 */
+.markdown-preview-view pre[class*="language-java"],
+.markdown-preview-view pre:has(code[class*="language-java"]),
+.cm-s-obsidian .HyperMD-codeblock[class*="language-java"] {
+    background: #2d2d2d !important;
+    border-left-color: #ed8b00; /* Java 橙色 */
+}
+
+/* C# 代码块 */
+.markdown-preview-view pre[class*="language-csharp"],
+.markdown-preview-view pre:has(code[class*="language-csharp"]),
+.cm-s-obsidian .HyperMD-codeblock[class*="language-csharp"] {
+    background: #2d2d2d !important;
+    border-left-color: #68217a; /* C# 紫色 */
+}
+
+/* Go 代码块 */
+.markdown-preview-view pre[class*="language-go"],
+.markdown-preview-view pre:has(code[class*="language-go"]),
+.cm-s-obsidian .HyperMD-codeblock[class*="language-go"] {
+    background: #2d2d2d !important;
+    border-left-color: #00add8; /* Go 青色 */
+}
+
+/* Rust 代码块 */
+.markdown-preview-view pre[class*="language-rust"],
+.markdown-preview-view pre:has(code[class*="language-rust"]),
+.cm-s-obsidian .HyperMD-codeblock[class*="language-rust"] {
+    background: #2d2d2d !important;
+    border-left-color: #ce422b; /* Rust 红色 */
+}
+
+/* ===== 代码块语法高亮 ===== */
+
+/* 关键字 */
+.token.keyword,
+.cm-s-obsidian span.cm-keyword,
+.markdown-preview-view pre .keyword {
+    color: var(--code-text-keyword) !important;
+    font-weight: bold;
+}
+
+/* 函数名 */
+.token.function,
+.cm-s-obsidian span.cm-def,
+.cm-s-obsidian span.cm-attribute,
+.markdown-preview-view pre .function {
+    color: var(--code-text-function) !important;
+}
+
+/* 字符串 */
+.token.string,
+.cm-s-obsidian span.cm-string,
+.markdown-preview-view pre .string {
+    color: var(--code-text-string) !important;
+}
+
+/* 数字 */
+.token.number,
+.cm-s-obsidian span.cm-number,
+.markdown-preview-view pre .number {
+    color: var(--code-text-number) !important;
+}
+
+/* 注释 */
+.token.comment,
+.cm-s-obsidian span.cm-comment,
+.markdown-preview-view pre .comment {
+    color: var(--code-text-comment) !important;
+    font-style: italic;
+}
+
+/* 变量 */
+.token.variable,
+.cm-s-obsidian span.cm-variable,
+.cm-s-obsidian span.cm-variable-2,
+.markdown-preview-view pre .variable {
+    color: var(--code-text-variable) !important;
+}
+
+/* 类型 */
+.token.type,
+.token.class-name,
+.cm-s-obsidian span.cm-builtin,
+.markdown-preview-view pre .type {
+    color: var(--code-text-type) !important;
+}
+
+/* 运算符 */
+.token.operator,
+.cm-s-obsidian span.cm-operator,
+.markdown-preview-view pre .operator {
+    color: var(--code-text-normal) !important;
+}
+
+/* 标点符号 */
+.token.punctuation,
+.cm-s-obsidian span.cm-bracket,
+.markdown-preview-view pre .punctuation {
+    color: var(--code-text-normal) !important;
+}
+
+/* 标签 */
+.token.tag,
+.cm-s-obsidian span.cm-tag,
+.markdown-preview-view pre .tag {
+    color: var(--code-text-keyword) !important;
+}
+
+/* 属性 */
+.token.attr-name,
+.cm-s-obsidian span.cm-property,
+.markdown-preview-view pre .attr-name {
+    color: var(--code-text-function) !important;
+}
+
+/* 值 */
+.token.attr-value,
+.markdown-preview-view pre .attr-value {
+    color: var(--code-text-string) !important;
+}
+
+/* ===== 内联代码样式 ===== */
+code,
+.cm-inline-code {
+    background: rgba(139, 0, 0, 0.15) !important;
+    border: 1px solid rgba(139, 0, 0, 0.3) !important;
+    border-radius: 4px;
+    color: var(--code-text-function);
+    font-family: 'Fira Code', 'JetBrains Mono', 'Consolas', 'Courier New', monospace !important;
+    font-size: 0.9em;
+    padding: 3px 6px !important;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+/* ===== 代码块标题栏（如果存在） ===== */
+.markdown-preview-view pre[class*="language-"]::before {
+    color: var(--code-text-comment);
+    content: attr(class);
+    font-size: 0.7em;
+    letter-spacing: 1px;
+    position: absolute;
+    right: 10px;
+    text-transform: uppercase;
+    top: 5px;
+    z-index: 3;
+}
+
+/* 移除特定语言类名前缀 */
+.markdown-preview-view pre[class*="language-"]::before {
+    content: attr(class);
+    content: attr(class);
+}
+
+/* 特定语言显示更友好的名称 */
+.markdown-preview-view pre.language-python::before { content: "Python"; }
+.markdown-preview-view pre.language-javascript::before { content: "JavaScript"; }
+.markdown-preview-view pre.language-js::before { content: "JavaScript"; }
+.markdown-preview-view pre.language-typescript::before { content: "TypeScript"; }
+.markdown-preview-view pre.language-ts::before { content: "TypeScript"; }
+.markdown-preview-view pre.language-html::before { content: "HTML"; }
+.markdown-preview-view pre.language-css::before { content: "CSS"; }
+.markdown-preview-view pre.language-json::before { content: "JSON"; }
+.markdown-preview-view pre.language-yaml::before { content: "YAML"; }
+.markdown-preview-view pre.language-markdown::before { content: "Markdown"; }
+.markdown-preview-view pre.language-sql::before { content: "SQL"; }
+.markdown-preview-view pre.language-bash::before { content: "Bash"; }
+.markdown-preview-view pre.language-shell::before { content: "Shell"; }
+.markdown-preview-view pre.language-cpp::before { content: "C++"; }
+.markdown-preview-view pre.language-java::before { content: "Java"; }
+.markdown-preview-view pre.language-csharp::before { content: "C#"; }
+.markdown-preview-view pre.language-go::before { content: "Go"; }
+.markdown-preview-view pre.language-rust::before { content: "Rust"; }
+
+/* ===== 代码块标题样式 ===== */
+.markdown-preview-view pre[class*="language-"]::before {
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid var(--code-border-primary);
+    border-radius: 3px;
+    padding: 2px 8px;
+}
+
+/* ===== 代码块悬停效果 ===== */
+.markdown-preview-view pre:hover,
+.cm-s-obsidian .HyperMD-codeblock:hover {
+    box-shadow: 
+        0 5px 15px rgba(139, 0, 0, 0.4),
+        inset 0 0 15px rgba(139, 0, 0, 0.2);
+    transform: translateY(-2px);
+    transition: all 0.3s ease;
+}
+
+/* ===== 编辑器中的代码块样式 ===== */
+.markdown-source-view.mod-cm6 .cm-editor .cm-line:has(.cm-inline-code) {
+    background: rgba(139, 0, 0, 0.05);
+}
+
+/* ===== 代码块复制按钮样式（如果存在）===== */
+.copy-code-button {
+    background: var(--code-border-primary) !important;
+    border: 1px solid var(--code-border-secondary) !important;
+    border-radius: 4px !important;
+    color: var(--code-text-normal) !important;
+    font-size: 0.8em !important;
+    padding: 4px 8px !important;
+    position: absolute !important;
+    right: 8px !important;
+    top: 8px !important;
+    z-index: 10 !important;
+    transition: all 0.2s ease !important;
+}
+
+.copy-code-button:hover {
+    background: var(--code-border-secondary) !important;
+    transform: scale(1.05) !important;
+}
+
+/* ===== 代码块行高亮 ===== */
+.cm-activeLine.cm-line:has(.cm-inline-code) {
+    background: rgba(139, 0, 0, 0.15) !important;
+}
+
+/* ===== 特殊代码块样式：带边框的 ===== */
+pre[class*="bordered"],
+pre.bordered {
+    border: 2px solid var(--code-border-accent) !important;
+    border-left: 6px solid var(--code-border-accent) !important;
+}
+
+/* ===== 特殊代码块样式：带背景纹理 ===== */
+pre[class*="textured"],
+pre.textured {
+    background: 
+        var(--code-bg-dark),
+        linear-gradient(45deg, rgba(139, 0, 0, 0.05) 25%, transparent 25%, transparent 75%, rgba(139, 0, 0, 0.05) 75%),
+        linear-gradient(45deg, rgba(139, 0, 0, 0.05) 25%, transparent 25%, transparent 75%, rgba(139, 0, 0, 0.05) 75%) !important;
+    background-position: 0 0, 10px 10px !important;
+    background-size: 20px 20px !important;
+}
+
+/* ===== 代码块行号特殊样式 ===== */
+.HyperMD-codeblock.cm-line:not(.HyperMD-codeblock-begin):not(.HyperMD-codeblock-end)::after {
+    background: linear-gradient(to right, 
+        rgba(0, 0, 0, 0.7) 0%, 
+        rgba(139, 0, 0, 0.3) 100%) !important;
+    border-right: 1px solid var(--code-border-primary) !important;
+    color: var(--code-text-comment) !important;
+}
+
+/* ===== 代码块滚动条样式 ===== */
+.markdown-preview-view pre::-webkit-scrollbar,
+.cm-s-obsidian .HyperMD-codeblock::-webkit-scrollbar {
+    height: 8px;
+}
+
+.markdown-preview-view pre::-webkit-scrollbar-track,
+.cm-s-obsidian .HyperMD-codeblock::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 4px;
+}
+
+.markdown-preview-view pre::-webkit-scrollbar-thumb,
+.cm-s-obsidian .HyperMD-codeblock::-webkit-scrollbar-thumb {
+    background: var(--code-border-primary);
+    border: 1px solid var(--code-border-secondary);
+    border-radius: 4px;
+}
+
+.markdown-preview-view pre::-webkit-scrollbar-thumb:hover,
+.cm-s-obsidian .HyperMD-codeblock::-webkit-scrollbar-thumb:hover {
+    background: var(--code-border-secondary);
+}
+
+/* ===== 代码块选择样式 ===== */
+.markdown-preview-view pre::selection,
+.markdown-preview-view pre *::selection,
+.cm-s-obsidian .HyperMD-codeblock::selection,
+.cm-s-obsidian .HyperMD-codeblock *::selection {
+    background: rgba(221, 160, 221, 0.4) !important;
+    color: var(--code-text-normal) !important;
+}
+
+/* ===== 不同主题的代码块适配 ===== */
+.theme-light .markdown-preview-view pre,
+.theme-light .cm-s-obsidian .HyperMD-codeblock {
+    background: #f8f8f8 !important;
+    border: 1px solid #d0d0d0 !important;
+    border-left: 4px solid var(--code-border-primary) !important;
+    color: #333 !important;
+}
+
+.theme-light .token.keyword,
+.theme-light .cm-s-obsidian span.cm-keyword {
+    color: #e96900 !important;
+}
+
+.theme-light .token.function,
+.theme-light .cm-s-obsidian span.cm-def {
+    color: #66d9ef !important;
+}
+
+.theme-light .token.string,
+.theme-light .cm-s-obsidian span.cm-string {
+    color: #4ea1df !important;
+}
+
+/* ===== 代码块动画效果 ===== */
+@keyframes codeGlow {
+    0% { box-shadow: 0 0 5px rgba(139, 0, 0, 0.3); }
+    50% { box-shadow: 0 0 15px rgba(139, 0, 0, 0.6); }
+    100% { box-shadow: 0 0 5px rgba(139, 0, 0, 0.3); }
+}
+
+.markdown-preview-view pre.animated,
+.cm-s-obsidian .HyperMD-codeblock.animated {
+    animation: codeGlow 3s infinite;
+}
+
+/* ===== 代码块焦点样式 ===== */
+.markdown-preview-view pre:focus-within,
+.cm-s-obsidian .HyperMD-codeblock:focus-within {
+    box-shadow: 
+        0 0 10px rgba(184, 134, 11, 0.4),
+        inset 0 0 10px rgba(139, 0, 0, 0.2);
+    outline: 2px solid var(--code-border-accent);
+    outline-offset: 2px;
+}
+
+/* ===== 代码块内容区域特殊样式 ===== */
+.markdown-preview-view pre code {
+    caret-color: var(--code-text-function);
+}
+
+/* ===== 代码块内特殊标记样式 ===== */
+.markdown-preview-view pre mark,
+.cm-s-obsidian .HyperMD-codeblock mark {
+    background: rgba(255, 215, 0, 0.3) !important;
+    border-radius: 3px;
+    color: var(--code-text-normal) !important;
+    padding: 1px 3px !important;
+}
+
+/*===============================================================
+                           Gothique
+                           ---------
+                  Gothic theme for Obsidian
+
+                期望能符合您的口味，请更多地关注代码提供者。 
+
+            https://www.buymeacoffee.com/gothiquetheme
+*===============================================================*/
+
+
+
