@@ -1,0 +1,16 @@
+# Obsidian相关缓存文件
+.obsidian/
+*.log
+*.tmp
+*.swp
+
+# 编辑器/IDE临时文件
+*.idea/
+.vscode/
+*.iml
+*.code-workspace
+
+# 临时文件
+*.tmp
+*.bak
+*.swp
