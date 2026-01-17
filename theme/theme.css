@@ -247,21 +247,23 @@ settings:
     --gradient-radial: radial-gradient(circle at center, rgba(199, 74, 119, 0.15) 0%, transparent 70%);
     
     /* 魔幻主题色 */
-    --witch-trial-red: #8B0000;
+    --witch-trial-red: #8b003a;
     --witch-trial-purple: #8148aa;
     --witch-trial-dark: #0d0a0b;
     --witch-trial-ash: #2f2f2f;
     --witch-trial-silver: #C0C0C0;
-    --witch-trial-gold: #B8860B;
-    --witch-trial-ivory: #F5F5DC;
-    
+    --witch-trial-gold: #bdcce7;
+    --witch-trial-ivory: #c4c3c2;
+    --witch-trial-h1:  #8148aa;
+    --witch-trial-strong: #d27ed4;
+
     /* 魔法元素色 */
     --magic-pink: #FF69B4;
     --magic-purple: #DA70D6;
     --magic-dark-purple: #8A2BE2;
     --magic-black: #0a0a0a;
     --magic-blood: #8B0000;
-    --magic-shadow: #1a1a1a;
+    --magic-shadow: #000000a2;
     
     /* 魔幻渐变预设 */
     --gradient-witch-trial: linear-gradient(135deg, var(--witch-trial-red) 0%, var(--witch-trial-purple) 100%);
@@ -472,6 +474,104 @@ Albus-0.2 深色模式
 /* ========================================
 Albus-1 布局
 ======================================== */
+/* ========================================
+设置页面卡片样式 - 修复搜索栏布局问题
+======================================== */
+
+/* 快捷键列表 */
+body:not(.hotkey-layout) .vertical-tabs-container .vertical-tab-content>.hotkey-list-container,
+/* 核心插件列表 */
+body:not(.plugin-layout) .vertical-tabs-container .plugin-list-plugins>div:not(.setting-item),
+/* 第三方插件列表 */
+body:not(.installed-plugin-layout) .vertical-tabs-container .installed-plugins-container {
+  display: block; /* 改回 block，避免 grid 影响搜索栏 */
+
+  /* 搜索栏和标题保持原样 */
+  .setting-item:is(:has(~.setting-item-heading), .setting-item-heading),
+  .search-input-container,
+  .setting-search-container {
+    display: block !important;
+    width: 100% !important;
+    margin: 8px 0 !important;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    transform: none !important;
+    height: auto !important;
+  }
+
+  /* 为卡片项目创建单独的网格容器 */
+  .setting-item:not(:has(~.setting-item-heading)):not(.setting-item-heading) {
+    display: inline-block;
+    width: calc(50% - 8px);
+    vertical-align: top;
+    margin: 4px;
+    border: 1px solid var(--background-modifier-border);
+    border-radius: 8px;
+    padding: 1em;
+    background: var(--background-secondary);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: all 0.2s ease;
+    overflow: hidden;
+    height: 140px;
+    box-sizing: border-box;
+  }
+
+  /* 快捷键页面稍微低一点 */
+  &.hotkey-list-container .setting-item:not(:has(~.setting-item-heading)):not(.setting-item-heading) {
+    height: 120px;
+  }
+
+  /* 第三方插件页面高一点 */
+  &.installed-plugins-container .setting-item:not(:has(~.setting-item-heading)):not(.setting-item-heading) {
+    height: 160px;
+  }
+
+  /* 轻微交错效果 - 奇数项稍微向上 */
+  .setting-item:not(:has(~.setting-item-heading)):not(.setting-item-heading):nth-child(odd) {
+    transform: translateY(-3px);
+  }
+
+  /* 轻微交错效果 - 偶数项稍微向下 */
+  .setting-item:not(:has(~.setting-item-heading)):not(.setting-item-heading):nth-child(even) {
+    transform: translateY(3px);
+  }
+
+  /* 悬停效果 */
+  .setting-item:not(:has(~.setting-item-heading)):not(.setting-item-heading):hover {
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    border-color: var(--interactive-accent);
+    z-index: 1;
+  }
+
+  .setting-item-info {
+    overflow: hidden;
+    overflow-wrap: anywhere;
+  }
+}
+
+/* 第三方插件列表按钮微调 */
+.installed-plugins-container .setting-item.mod-toggle {
+  position: relative;
+  display: flex;
+  flex-flow: column nowrap;
+
+  .setting-item-info {
+    flex: 2 0 auto;
+    margin-left: 10px;
+    width: 100%;
+  }
+}
+
+.installed-plugins-container .setting-item-control {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: right;
+  right: 0px;
+  width: 100%;
+  flex: 0;
+}
 
 /* ========================================
 Albus-1.1 激活按钮高亮显示
@@ -674,42 +774,6 @@ body:not(.anp-alternate-tab-toggle):not(.anp-disable-newtab-align) .workspace-sp
   --tab-text-color-focused-highlighted: var(--text-accent);
 }
 
-/* ========================================
-Albus-1.4 设置页面卡片样式
-======================================== */
-/* 设置界面的宽度设置 */
-.modal.mod-settings.mod-settings.mod-settings.mod-settings {
-  /* min-width: 1200px !important; */
-}
-
-/* 2024-12-17 参考Huajin的obsidian-settings-management插件的样式 https://github.com/xhuajin/obsidian-settings-management/blob/master/src/styles.css */
-/* 快捷键列表 */
-body:not(.hotkey-layout) .vertical-tabs-container .vertical-tab-content>.hotkey-list-container,
-/* 核心插件列表 */
-body:not(.plugin-layout) .vertical-tabs-container .plugin-list-plugins>div:not(.setting-item),
-/* 第三方插件列表 */
-body:not(.installed-plugin-layout) .vertical-tabs-container .installed-plugins-container {
-  display: grid;
-  gap: 15px;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-
-  /* 子项目设置 */
-  .setting-item:not(:has(~.setting-item-heading)):not(.setting-item-heading) {
-    border: 1px solid var(--background-modifier-border);
-    border-radius: 8px;
-    padding: 1em;
-  }
-
-  .setting-item:is(:has(~.setting-item-heading), .setting-item-heading) {
-    grid-column: 1 / -1;
-  }
-
-  .setting-item-info {
-
-    overflow: hidden;
-    overflow-wrap: anywhere;
-  }
-}
 
 /* 第三方插件列表 按钮微调*/
 .installed-plugins-container .setting-item.mod-toggle {
@@ -1667,6 +1731,13 @@ body {
 .markdown-preview-view hr {
 	border-top: 1px solid;
 	border-image: linear-gradient(to right, #4a3e5e, #53186b) 2;
+    .markdown-preview-view {
+	background: linear-gradient(135deg, #1a1a2e 0%, #16213e 25%, #0f0f23 50%, #16213e 75%, #1a1a2e 100%) !important;
+}
+
+.markdown-rendered {
+	background: linear-gradient(135deg, #1a1a2e 0%, #16213e 25%, #0f0f23 50%, #16213e 75%, #1a1a2e 100%) !important;
+}
 }
 /*实时模式渐变色分割线*/
 .markdown-source-view div.hr.cm-line hr {
@@ -1793,10 +1864,11 @@ input, textarea {
 
 /* ===== 编辑器代码块样式 ===== */
 /* CodeMirror 6 编辑器 */
-.cm-content {
+/*.cm-content {
     background: var(--background-primary);
     color: var(--text-normal);
 }
+    */
 
 .cm-lineNumbers .cm-gutterElement {
     color: var(--interactive-accent) !important;
@@ -2380,7 +2452,7 @@ body {
     --gothique-border-light: #4d4d4d;
     
     --gothique-purple: #5d1a5d;
-    --gothique-gold: #b8860b;
+    --gothique-gold: #a58c4c;
     --gothique-silver: #c0c0c0;
 }
 
@@ -2430,7 +2502,7 @@ body {
 
 .cm-header-3,
 .markdown-preview-view h3 {
-    color: var(--gothique-gold);
+    color: #7fd68e;
     font-family: "UnifrakturMaguntia", "Blackletter", cursive;
     font-size: 1.5em;
     font-weight: normal;
@@ -2438,13 +2510,7 @@ body {
 
 .cm-header-4,
 .markdown-preview-view h4 {
-    color: #00BFFF; /* 深天蓝（深青色） */
-    /* 或者其他青色选项：
-    color: #00CED1;  深绿松石色
-    color: #20B2AA;  浅海绿
-    color: #5FD3D3;  亮青色
-    color: #00D9FF;  明亮青色
-    */
+    color: #00BFFF; 
     font-family: "UnifrakturMaguntia", "Blackletter", cursive;
     font-size: 1.2em;
     font-weight: normal;
@@ -2735,10 +2801,10 @@ hr::before {
 /* 标题魔幻风格 */
 .cm-header-1, .markdown-preview-view h1 {
     background: linear-gradient(135deg, 
-        var(--witch-trial-red) 0%, 
+        var(--witch-trial-h1) 0%, 
         var(--witch-trial-purple) 90%);
     background-clip: text;
-    border-bottom: 2px solid var(--witch-trial-red);
+    border-bottom: 2px solid var(--witch-trial-h1);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
@@ -2754,8 +2820,7 @@ hr::before {
 }
 
 .cm-header-3, .markdown-preview-view h3 {
-    color: var(--magic-pink);
-    text-shadow: 0 0 5px rgba(221, 160, 221, 0.5);
+    text-shadow: 0 0 5px rgba(252, 28, 252, 0.5);
 }
 
 /* 内联代码魔幻风格 */
@@ -2776,9 +2841,39 @@ code, .cm-inline-code {
     border-color: var(--magic-pink);
 }
 
+/* 存在的笔记（活动） */
+.cm-hmd-internal-link,
+.markdown-preview-view .internal-link {
+    color: #14bb68;
+    text-decoration: underline;
+}
+
+/* 不存在的笔记（非活动） */
+.cm-hmd-internal-link.cm-link-has-alias,
+.markdown-preview-view .internal-link.is-unresolved {
+    color: #465d63;
+    text-decoration: none;
+    opacity: 0.7;
+}
+
+
+/* 魔幻主题的特殊链接效果 */
+.cm-link, .markdown-preview-view a {
+    color:  #4ed3f5;
+    position: relative;
+    text-decoration: none;
+}
+
+.cm-link:hover, .markdown-preview-view a:hover {
+    color: var(--magic-pink);
+    text-shadow: 0 0 8px var(--magic-pink);
+}
+
+
+
 /* 魔幻主题的内部链接 */
 .internal-link {
-    color: var(--magic-pink);
+    color: var(--magic-h1);
     position: relative;
     text-decoration: none;
 }
@@ -2982,21 +3077,10 @@ select {
 }
 
 .cm-strong, .markdown-preview-view strong {
-    color: var(--witch-trial-red);
+    color: var(--witch-trial-strong);
     text-shadow: 0 0 5px rgba(139, 0, 0, 0.3);
 }
 
-/* 魔幻主题的特殊链接效果 */
-.cm-link, .markdown-preview-view a {
-    color: var(--magic-purple);
-    position: relative;
-    text-decoration: none;
-}
-
-.cm-link:hover, .markdown-preview-view a:hover {
-    color: var(--magic-pink);
-    text-shadow: 0 0 8px var(--magic-pink);
-}
 
 /* 魔幻主题的特殊代码高亮 */
 .cm-s-obsidian span.cm-comment {
@@ -3314,7 +3398,7 @@ body.is-focused .mod-active .workspace-tab-header.is-active .workspace-tab-heade
     animation: witchTrialFadeIn var(--animation) forwards;
 }
 
-/* 魔幻主题的特殊设置面板网格 */
+/* 魔幻主题的特殊设置面板网格 
 body:not(.hotkey-layout) .vertical-tabs-container .vertical-tab-content>.hotkey-list-container,
 body:not(.plugin-layout) .vertical-tabs-container .plugin-list-plugins>div:not(.setting-item),
 body:not(.installed-plugin-layout) .vertical-tabs-container .installed-plugins-container {
@@ -3328,6 +3412,7 @@ body:not(.installed-plugin-layout) .vertical-tabs-container .installed-plugins-c
         box-shadow: 0 0 10px rgba(139, 0, 0, 0.2);
     }
 }
+    */
 
 /* 魔幻主题的特殊设置面板按钮 */
 .installed-plugins-container .setting-item.mod-toggle .setting-item-control {
@@ -3560,10 +3645,10 @@ ul li::before {
 
 ol li::before {
     background: rgba(139, 0, 0, 0.1);
-    border: 1px solid var(--witch-trial-red);
-    color: var(--witch-trial-red);
+    border: 1px solid var(--witch-trial-h1);
+    color: var(--witch-trial-h1);
     content: counter(gothic-counter);
-    text-shadow: 0 0 5px var(--witch-trial-red);
+    text-shadow: 0 0 5px var(--witch-trial-dark);
 }
 
 /* 魔幻主题的特殊有序列表计数器 */
